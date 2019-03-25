@@ -6,28 +6,44 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QMainWindow>
+#include <QLabel>
+#include <QDebug>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
 
+#include "itemcontainer.h"
 #include "verticalscrollarea.h"
 
-class PageBase : public QMainWindow
+class PageBase : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PageBase(QWidget *parent = nullptr);
+    explicit PageBase(int, QWidget *parent = nullptr);
+    ~PageBase();
+    int getPnageId();
+    void setPageId(int);
 
-signals:
+protected slots:
+    void on_backButton_clicked();
+    void on_cancelButton_clicked();
 
-private slots:
-    void virtual on_backButton_clicked() = 0;
-    void virtual on_cancelButton_clicked() = 0;
-
-private:
-    QHBoxLayout *baseLayout;  // for button container
-    QHBoxLayout *HLayout;  // for button container
-    QVBoxLayout *VLayout;  // for item container
+protected:
     QPushButton *backButton;
     QPushButton *cancelButton;
+    QLabel *titleLabel;
+
+private:
+    QVBoxLayout *baseLayout;
+    QHBoxLayout *buttonLayout;  // for button container
+    QVBoxLayout *VLayout;  // for VerticalScrollArea
+    QFrame* topContainer;
+    int pageId;
     VerticalScrollArea *scroll;
+    QVector<ItemContainer*> containarItem;
+    ItemContainer *test;
+
+    void setTitle(int id);
+    QString pageTitle;
 };
 
 #endif // PAGEBAGE_H
