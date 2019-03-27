@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>DataBase/consumables.csv</file>
+        <file>DataBase/tableName.csv</file>
+    </qresource>
+</RCC>

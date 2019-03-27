@@ -7,7 +7,6 @@ PageBase::PageBase(int pageId, QWidget *parent):
 {
     this->setPageId(pageId);
     this->setTitle(pageId);
-    qInfo() << pageTitle;
     titleLabel = new QLabel();
     titleLabel->setText(pageTitle);
     titleLabel->setFont(QFont("Helvetica", 20));
@@ -122,4 +121,17 @@ void PageBase::on_backButton_clicked(){
 
 void PageBase::on_cancelButton_clicked(){
     qInfo("cancel");
+}
+
+void PageBase::readCsv(QStringList wordList){
+    QFile file(":/DataBase/consumables.csv");
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << file.errorString();
+        return;
+    }
+
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        wordList.append(line.split(',')[1]);
+    }
 }

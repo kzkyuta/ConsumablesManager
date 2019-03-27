@@ -10,6 +10,8 @@
 #include <QDebug>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
+#include <QStringList>
+#include <QFile>
 
 #include "itemcontainer.h"
 #include "verticalscrollarea.h"
@@ -17,6 +19,7 @@
 class PageBase : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit PageBase(int, QWidget *parent = nullptr);
     ~PageBase();
@@ -41,6 +44,9 @@ private:
     VerticalScrollArea *scroll;
     QVector<ItemContainer*> containarItem;
     ItemContainer *test;
+    QStringList itemList;
+    QStringList tableList;
+    void readCsv(QStringList);
 
     void setTitle(int id);
     QString pageTitle;
