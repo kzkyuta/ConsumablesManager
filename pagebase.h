@@ -50,6 +50,7 @@ private:
     QStringList itemList;
     QStringList tableList;
     void createDB(QSqlDatabase);
+    void setupItemContainer(QSqlDatabase);
 
     void readCsv(QStringList);
 

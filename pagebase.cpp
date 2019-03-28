@@ -32,30 +32,17 @@ PageBase::PageBase(int pageId, QWidget *parent):
     baseLayout->addLayout(VLayout);
     VLayout->addWidget(scroll);
 
-    // for test
-    int k = 0;
-    for(int i = 0; i < 7; i ++){
-        containarItem.append(new ItemContainer("item_" + QString::number(i), i, 0));
-        if(i % 3 == 0 && i != 0) k ++;
-        scroll->addWidget(containarItem.back(), k , i%3);  //
-        qInfo() << k << ", " << i%3;
-    }
-
+    // database open
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("./consumableManage.sqlite3");
     db.open();
-
-    QSqlQuery query(db);
-    query.exec("create table test1(id, name, memo)");
-    qDebug() << "tables 2";
-    for (int i = 0; i < db.tables().count(); i ++) {
-        qDebug() << db.tables().at(i);
-    }
 
     // table open
     if(db.tables().count() == 0){ // if there is no table, create.
         createDB(db);
     }
+
+    setupItemContainer(db);
 
     db.close();
 
@@ -150,6 +137,23 @@ void PageBase::createDB(QSqlDatabase db){
         int status = query.value(2).toInt();
         QString URL = query.value(3).toString();
         int archive = query.value(4).toInt();
+        qDebug() << QString("id(%1),name(%2),status(%3),URL(%4),archive(%5)").arg(id).arg(name).arg(status).arg(URL).arg(archive);
+    }
+}
+
+void PageBase::setupItemContainer(QSqlDatabase db){
+    QSqlQuery query(db);
+    query.exec("select * from office");
+    int i = 0;
+    while (query.next()) {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        int status = query.value(2).toInt();
+        QString URL = query.value(3).toString();
+        int archive = query.value(4).toInt();
+        containarItem.append(new ItemContainer(name,id, status));
+        scroll->addWidget(containarItem.back(), i/3 , i%3);
+        i ++;
         qDebug() << QString("id(%1),name(%2),status(%3),URL(%4),archive(%5)").arg(id).arg(name).arg(status).arg(URL).arg(archive);
     }
 }
