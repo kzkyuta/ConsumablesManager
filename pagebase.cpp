@@ -69,7 +69,7 @@ void PageBase::setTitle(int id){
     }
 }
 
-int PageBase::getPnageId(){
+int PageBase::getPageId(){
     return pageId;
 }
 
@@ -87,19 +87,6 @@ void PageBase::on_backButton_clicked(){
 
 void PageBase::on_cancelButton_clicked(){
     qInfo("cancel");
-}
-
-void PageBase::readCsv(QStringList wordList){
-    QFile file(":/DataBase/consumables.csv");
-    if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << file.errorString();
-        return;
-    }
-
-    while (!file.atEnd()) {
-        QByteArray line = file.readLine();
-        wordList.append(line.split(',')[1]);
-    }
 }
 
 void PageBase::createDB(QSqlDatabase db){

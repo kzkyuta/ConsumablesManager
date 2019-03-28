@@ -26,7 +26,8 @@ class PageBase : public QWidget
 public:
     explicit PageBase(int, QWidget *parent = nullptr);
     ~PageBase();
-    int getPnageId();
+    int getPageId();
+    QString getPageName();
     void setPageId(int);
 
 protected slots:
@@ -52,10 +53,7 @@ private:
     void createDB(QSqlDatabase);
     void setupItemContainer(QSqlDatabase);
 
-    void readCsv(QStringList);
-
     void setTitle(int id);
-    QString pageTitle;
 };
 
 #endif // PAGEBAGE_H

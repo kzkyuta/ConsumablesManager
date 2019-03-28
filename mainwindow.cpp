@@ -21,6 +21,6 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::on_button_1_clicked(){
-    qDebug() << officePage->getPnageId();
-    ui->stackedWidget->setCurrentIndex(officePage->getPnageId());
+    qDebug() << officePage->getPageId();
+    ui->stackedWidget->setCurrentIndex(officePage->getPageId());
 }
