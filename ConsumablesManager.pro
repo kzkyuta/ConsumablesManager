@@ -31,14 +31,16 @@ SOURCES += \
     secondpage.cpp \
     verticalscrollarea.cpp \
     pagebase.cpp \
-    itemcontainer.cpp
+    itemcontainer.cpp \
+    dbmanager.cpp
 
 HEADERS += \
         mainwindow.h \
     secondpage.h \
     verticalscrollarea.h \
     pagebase.h \
-    itemcontainer.h
+    itemcontainer.h \
+    dbmanager.h
 
 FORMS += \
         mainwindow.ui \
