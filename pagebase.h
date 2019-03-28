@@ -12,6 +12,9 @@
 #include <QtSql/QSqlQuery>
 #include <QStringList>
 #include <QFile>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
 
 #include "itemcontainer.h"
 #include "verticalscrollarea.h"
@@ -46,6 +49,8 @@ private:
     ItemContainer *test;
     QStringList itemList;
     QStringList tableList;
+    void createDB(QSqlDatabase);
+
     void readCsv(QStringList);
 
     void setTitle(int id);

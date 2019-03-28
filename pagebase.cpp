@@ -42,12 +42,8 @@ PageBase::PageBase(int pageId, QWidget *parent):
     }
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("./testdatabase.sqlite3");
+    db.setDatabaseName("./consumableManage.sqlite3");
     db.open();
-    qDebug() << "tables 1";
-    for (int i = 0; i < db.tables().count(); i ++) {
-        qDebug() << db.tables().at(i);
-    }
 
     QSqlQuery query(db);
     query.exec("create table test1(id, name, memo)");
@@ -56,29 +52,12 @@ PageBase::PageBase(int pageId, QWidget *parent):
         qDebug() << db.tables().at(i);
     }
 
-    query.prepare("insert into test1 (id, name, memo) "
-                      "values (?, ?, ?)");
-    for (int i = 0; i < 20; i ++) {
-        query.bindValue(0, i);
-        query.bindValue(1, QString("name%1").arg(i));
-        query.bindValue(2, QString("memo%1").arg(i));
-        query.exec();
+    // table open
+    if(db.tables().count() == 0){ // if there is no table, create.
+        createDB(db);
     }
 
-    qDebug() << "records";
-    query.exec("select * from test1");
-    while (query.next()) {
-        int id = query.value(0).toInt();
-        QString name = query.value(1).toString();
-        QString memo = query.value(2).toString();
-        qDebug() << QString("id(%1),name(%2),memo(%3)").arg(id).arg(name).arg(memo);
-    }
-
-     db.close();
-
-//    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-//    db.setDatabaseName("./DataBase/ConsumablesData.db");
-//    db.open();
+    db.close();
 
     connect(backButton, SIGNAL(clicked()), this, SLOT(on_backButton_clicked()));
     connect(cancelButton, SIGNAL(clicked()), this, SLOT(on_cancelButton_clicked()));
@@ -133,5 +112,44 @@ void PageBase::readCsv(QStringList wordList){
     while (!file.atEnd()) {
         QByteArray line = file.readLine();
         wordList.append(line.split(',')[1]);
+    }
+}
+
+void PageBase::createDB(QSqlDatabase db){
+    QFile openFile(":/DataBase/ConsubamleItems.json");
+    openFile.open(QIODevice::ReadOnly);
+
+    // input all data to QByteArray data
+    QByteArray data = openFile.readAll();
+    // read as json
+    QJsonDocument jsonDoc(QJsonDocument::fromJson(data));
+    QJsonObject jsonObj(jsonDoc.object());
+    // get Array data. there will be if state
+    QJsonArray jsonArr = jsonObj.value("office").toArray();
+
+    QSqlQuery query(db);
+    query.exec("create table office(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT NOT NULL UNIQUE, "
+                                   "status INTEGER NOT NULL, URL TEXT, archive INTEGER)");
+    query.prepare("insert into office (id, name, status, URL, archive) values (?, ?, ?, ?, ?)");
+    for(int i = 0; i < jsonArr.size(); i++){
+        QJsonObject temp = jsonArr[i].toObject();
+        query.bindValue(0, i); // id
+        query.bindValue(1, temp["name"].toString()); // name
+        query.bindValue(2, 0); // status
+        query.bindValue(3, temp["URL"].toString());  // URL
+        query.bindValue(4, 0); // archive
+        query.exec();
+    }
+
+    // output the datas
+    qDebug() << "records";
+    query.exec("select * from office");
+    while (query.next()) {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        int status = query.value(2).toInt();
+        QString URL = query.value(3).toString();
+        int archive = query.value(4).toInt();
+        qDebug() << QString("id(%1),name(%2),status(%3),URL(%4),archive(%5)").arg(id).arg(name).arg(status).arg(URL).arg(archive);
     }
 }

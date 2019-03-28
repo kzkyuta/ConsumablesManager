@@ -1,0 +1,106 @@
+{
+  "office": [
+      {
+          "name": "paper_A4",
+          "URL": "https://www.askul.co.jp/p/542680/"
+      },
+      {
+          "name": "paper_A3",
+          "URL": "https://www.askul.co.jp/p/542705/"
+      },
+      {
+          "name": "clear_files",
+          "URL": "https://www.askul.co.jp/p/596223/"
+      },
+      {
+          "name": "glue",
+          "URL": "https://www.askul.co.jp/p/644616/"
+      },
+      {
+          "name": "paper_tag",
+          "URL": "https://www.askul.co.jp/p/596223/"
+      }
+    ],
+    "engineering":[
+      {
+        "name": "air_duster",
+        "URL": "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "flux_cleaner",
+        "URL": "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "flux_cleaner",
+        "URL": "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "masking_tape",
+        "URL": "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "Curing_tape",
+        "URL": "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "gum_tape",
+        "URL": "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "battery_D",
+        "URL": "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "battery_C",
+        "URL": "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "battery_AA",
+        "URL": "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "battery_AAA",
+        "URL": "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "battery_N",
+        "URL": "https://www.askul.co.jp/p/596223/"
+      }
+    ],
+    "hygiene": [
+      {
+        "name": "detergent",
+        "URL" : "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "filter_tap_water",
+        "URL" : "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "sponge",
+        "URL" : "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "wet_tissue",
+        "URL" : "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "tissue",
+        "URL" : "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name": "kimwipe",
+        "URL" : "https://www.askul.co.jp/p/596223/"
+      }
+    ],
+    "others":[
+      {
+        "name" : "paper_cup",
+        "URL" : "https://www.askul.co.jp/p/596223/"
+      },
+      {
+        "name" : "coffee",
+        "URL" : "https://www.askul.co.jp/p/596223/"
+      }
+    ]
+}

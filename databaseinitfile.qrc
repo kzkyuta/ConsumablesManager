@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>DataBase/consumables.csv</file>
         <file>DataBase/tableName.csv</file>
+        <file>DataBase/ConsubamleItems.json</file>
     </qresource>
 </RCC>
