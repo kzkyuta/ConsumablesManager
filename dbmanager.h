@@ -23,6 +23,7 @@ public:
     static void setupContainer(QVector<ItemContainer*>, QString);
     static QVector<ItemContainer*> setupContainer(QString);
     static int countTableNum();
+    static QString getTableName(int);
 };
 
 #endif // DBMANAGER_H

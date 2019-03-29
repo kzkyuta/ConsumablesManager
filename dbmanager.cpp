@@ -92,3 +92,7 @@ QVector<ItemContainer*> DBManager::setupContainer(QString _pageName){
     }
     return temp;
 }
+
+QString DBManager::getTableName(int _i){
+    return db.tables().at(_i);
+}
