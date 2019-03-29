@@ -19,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent):
     ui->stackedWidget->addWidget(othersPage);
 
     if(DBManager::countTableNum() == 0){
-        qInfo() << officePage->getPageName();
         DBManager::createTable(officePage->getPageName());
         DBManager::createTable(engineeringPage->getPageName());
         DBManager::createTable(hygienePage->getPageName());

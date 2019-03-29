@@ -39,7 +39,7 @@ void DBManager::createTable(QString _pageName){
     QSqlQuery query(db);
     query.exec("create table " + _pageName + "(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT NOT NULL UNIQUE, "
                                    "status INTEGER NOT NULL, URL TEXT, archive INTEGER)");
-    query.prepare("insert into office (id, name, status, URL, archive) values (?, ?, ?, ?, ?)");
+    query.prepare("insert into " + _pageName +"(id, name, status, URL, archive) values (?, ?, ?, ?, ?)");
     for(int i = 0; i < jsonArr.size(); i++){
         QJsonObject temp = jsonArr[i].toObject();
         query.bindValue(0, i); // id
