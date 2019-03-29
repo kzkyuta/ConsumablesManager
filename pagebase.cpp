@@ -33,18 +33,24 @@ PageBase::PageBase(int pageId, QWidget *parent):
     VLayout->addWidget(scroll);
 
     // database open
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("./consumableManage.sqlite3");
-    db.open();
+//    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+//    db.setDatabaseName("./consumableManage.sqlite3");
+//    db.open();
+
 
     // table open
-    if(db.tables().count() == 0){ // if there is no table, create.
-        createDB(db);
+//    if(db.tables().count() == 0){ // if there is no table, create.
+//        createDB(db);
+//    }
+    containarItem = DBManager::setupContainer(pageName);
+    for(int i = 0; i < containarItem.count(); i++){
+        scroll->addWidget(containarItem[i], i/3 , i%3);
     }
 
-    setupItemContainer(db);
+//    setupItemContainer(db);
 
-    db.close();
+
+//    db.close();
 
     connect(backButton, SIGNAL(clicked()), this, SLOT(on_backButton_clicked()));
     connect(cancelButton, SIGNAL(clicked()), this, SLOT(on_cancelButton_clicked()));

@@ -1,10 +1,14 @@
 #include "dbmanager.h"
 
-QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-
 DBManager::DBManager()
 {
 
+}
+
+QSqlDatabase DBManager::db = QSqlDatabase::addDatabase("QSQLITE");
+
+void DBManager::setDB(QSqlDatabase _db){
+    db = _db;
 }
 
 void DBManager::openDB(){

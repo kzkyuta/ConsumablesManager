@@ -37,3 +37,21 @@ void MainWindow::on_button_1_clicked(){
     qDebug() << officePage->getPageId();
     ui->stackedWidget->setCurrentIndex(officePage->getPageId());
 }
+
+void MainWindow::on_button_2_clicked()
+{
+    qDebug() << engineeringPage->getPageId();
+    ui->stackedWidget->setCurrentIndex(engineeringPage->getPageId());
+}
+
+void MainWindow::on_button_3_clicked()
+{
+    qDebug() << hygienePage->getPageId();
+    ui->stackedWidget->setCurrentIndex(hygienePage->getPageId());
+}
+
+void MainWindow::on_button_4_clicked()
+{
+    qDebug() << othersPage->getPageId();
+    ui->stackedWidget->setCurrentIndex(othersPage->getPageId());
+}
