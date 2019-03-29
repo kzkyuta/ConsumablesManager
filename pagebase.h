@@ -18,6 +18,7 @@
 
 #include "itemcontainer.h"
 #include "verticalscrollarea.h"
+#include "dbmanager.h"
 
 class PageBase : public QWidget
 {
@@ -45,6 +46,8 @@ private:
     QVBoxLayout *VLayout;  // for VerticalScrollArea
     QFrame* topContainer;
     int pageId;
+    QString pageName; // for managing database
+    QString pageTitle; // for label input
     VerticalScrollArea *scroll;
     QVector<ItemContainer*> containarItem;
     ItemContainer *test;

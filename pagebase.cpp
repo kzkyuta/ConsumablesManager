@@ -56,15 +56,19 @@ void PageBase::setTitle(int id){
     switch (id) {
     case 1: // office consumables
         pageTitle = "Office Consumables";
+        pageName = "office";
         break;
     case 2:
         pageTitle = "Engineering Supplementation";
+        pageName = "engineering";
         break;
     case 3:
         pageTitle = "Hygiene consumables";
+        pageName = "hygiene";
         break;
     case 4:
         pageTitle = "Others";
+        pageName = "others";
         break;
     }
 }
@@ -79,6 +83,10 @@ void PageBase::setPageId(int id){
     }else{
         pageId = id;
     }
+}
+
+QString PageBase::getPageName(){
+    return pageName;
 }
 
 void PageBase::on_backButton_clicked(){
@@ -99,10 +107,10 @@ void PageBase::createDB(QSqlDatabase db){
     QJsonDocument jsonDoc(QJsonDocument::fromJson(data));
     QJsonObject jsonObj(jsonDoc.object());
     // get Array data. there will be if state
-    QJsonArray jsonArr = jsonObj.value("office").toArray();
+    QJsonArray jsonArr = jsonObj.value(pageName).toArray();
 
     QSqlQuery query(db);
-    query.exec("create table office(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT NOT NULL UNIQUE, "
+    query.exec("create table " + pageName + "(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT NOT NULL UNIQUE, "
                                    "status INTEGER NOT NULL, URL TEXT, archive INTEGER)");
     query.prepare("insert into office (id, name, status, URL, archive) values (?, ?, ?, ?, ?)");
     for(int i = 0; i < jsonArr.size(); i++){
@@ -117,7 +125,7 @@ void PageBase::createDB(QSqlDatabase db){
 
     // output the datas
     qDebug() << "records";
-    query.exec("select * from office");
+    query.exec("select * from " + pageName);
     while (query.next()) {
         int id = query.value(0).toInt();
         QString name = query.value(1).toString();
@@ -130,7 +138,7 @@ void PageBase::createDB(QSqlDatabase db){
 
 void PageBase::setupItemContainer(QSqlDatabase db){
     QSqlQuery query(db);
-    query.exec("select * from office");
+    query.exec("select * from " +pageName);
     int i = 0;
     while (query.next()) {
         int id = query.value(0).toInt();

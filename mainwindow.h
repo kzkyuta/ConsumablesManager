@@ -7,6 +7,7 @@
 #include <QIntegerForSize>
 #include <QDebug>
 
+#include "dbmanager.h"
 #include "pagebase.h"
 
 namespace Ui {
@@ -30,6 +31,7 @@ private:
     PageBase *engineeringPage;
     PageBase *hygienePage;
     PageBase *othersPage;
+    QSqlDatabase db;
 //    SecondPage *secondPage;
 };
 

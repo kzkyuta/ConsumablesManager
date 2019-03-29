@@ -14,12 +14,14 @@ class DBManager
 {
 private:
     DBManager();
-    static QSqlDatabase db;
 public:
+    static QSqlDatabase db;
+    static void setDB(QSqlDatabase);
     static void openDB();
     static void closeDB();
     static void createTable(QString);
     static void setupContainer(QVector<ItemContainer*>, QString);
+    static QVector<ItemContainer*> setupContainer(QString);
     static int countTableNum();
 };
 

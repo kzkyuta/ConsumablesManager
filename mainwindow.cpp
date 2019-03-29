@@ -3,20 +3,33 @@
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    officePage(new PageBase(1)),
-    engineeringPage(new PageBase(2)),
-    hygienePage(new PageBase(3)),
-    othersPage(new PageBase(4))
+    ui(new Ui::MainWindow)
 {
+    qInfo() << "open database";
+    DBManager::openDB();
     ui->setupUi(this);
+
+    officePage = new PageBase(1);
+    engineeringPage = new PageBase(2);
+    hygienePage = new PageBase(3);
+    othersPage = new PageBase(4);
     ui->stackedWidget->addWidget(officePage);
     ui->stackedWidget->addWidget(engineeringPage);
     ui->stackedWidget->addWidget(hygienePage);
     ui->stackedWidget->addWidget(othersPage);
+
+    if(DBManager::countTableNum() == 0){
+        qInfo() << officePage->getPageName();
+        DBManager::createTable(officePage->getPageName());
+        DBManager::createTable(engineeringPage->getPageName());
+        DBManager::createTable(hygienePage->getPageName());
+        DBManager::createTable(othersPage->getPageName());
+    }
 }
 
 MainWindow::~MainWindow(){
+    qInfo() << "close database";
+    DBManager::closeDB();
     delete ui;
 }
 

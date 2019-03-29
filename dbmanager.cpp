@@ -68,7 +68,23 @@ void DBManager::setupContainer(QVector<ItemContainer*> _container, QString _page
         int status = query.value(2).toInt();
         QString URL = query.value(3).toString();
         int archive = query.value(4).toInt();
-        _container.append(new ItemContainer(name,id, status));
+        _container.append(new ItemContainer(name, id, status));
         qDebug() << QString("id(%1),name(%2),status(%3),URL(%4),archive(%5)").arg(id).arg(name).arg(status).arg(URL).arg(archive);
     }
+}
+
+QVector<ItemContainer*> DBManager::setupContainer(QString _pageName){
+    QSqlQuery query(db);
+    QVector<ItemContainer*> temp;
+    query.exec("select * from " +_pageName);
+    while (query.next()) {
+        int id = query.value(0).toInt();
+        QString name = query.value(1).toString();
+        int status = query.value(2).toInt();
+        QString URL = query.value(3).toString();
+        int archive = query.value(4).toInt();
+        temp.append(new ItemContainer(name, id, status));
+//        qDebug() << QString("id(%1),name(%2),status(%3),URL(%4),archive(%5)").arg(id).arg(name).arg(status).arg(URL).arg(archive);
+    }
+    return temp;
 }
