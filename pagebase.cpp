@@ -32,21 +32,13 @@ PageBase::PageBase(int pageId, QWidget *parent):
     baseLayout->addLayout(VLayout);
     VLayout->addWidget(scroll);
 
-    // database open
-//    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-//    db.setDatabaseName("./consumableManage.sqlite3");
-//    db.open();
-
-
-    // table open
-//    if(db.tables().count() == 0){ // if there is no table, create.
-//        createDB(db);
-//    }
-
+    // if there is no tables, this code will create this own table
     if(DBManager::countTableNum() == 0){
         DBManager::createTable(pageName);
     }
 
+    // if there is some tables, this code check if there is this own table or not.
+    noTable = false;
     for(int i = 0; i < DBManager::countTableNum(); i++){
         if(DBManager::getTableName(i) == pageName){
             break;
@@ -58,11 +50,6 @@ PageBase::PageBase(int pageId, QWidget *parent):
     for(int i = 0; i < containarItem.count(); i++){
         scroll->addWidget(containarItem[i], i/3 , i%3);
     }
-
-//    setupItemContainer(db);
-
-
-//    db.close();
 }
 
 PageBase::~PageBase(){}
