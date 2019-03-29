@@ -42,6 +42,18 @@ PageBase::PageBase(int pageId, QWidget *parent):
 //    if(db.tables().count() == 0){ // if there is no table, create.
 //        createDB(db);
 //    }
+
+    if(DBManager::countTableNum() == 0){
+        DBManager::createTable(pageName);
+    }
+
+    for(int i = 0; i < DBManager::countTableNum(); i++){
+        if(DBManager::getTableName(i) == pageName){
+            break;
+        }
+        DBManager::createTable(pageName);
+    }
+
     containarItem = DBManager::setupContainer(pageName);
     for(int i = 0; i < containarItem.count(); i++){
         scroll->addWidget(containarItem[i], i/3 , i%3);
