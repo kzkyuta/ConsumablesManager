@@ -58,6 +58,7 @@ private:
     void setupItemContainer(QSqlDatabase);
 
     void setTitle(int id);
+    bool noTable;
 };
 
 #endif // PAGEBAGE_H

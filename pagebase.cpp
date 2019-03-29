@@ -41,10 +41,13 @@ PageBase::PageBase(int pageId, QWidget *parent):
     noTable = false;
     for(int i = 0; i < DBManager::countTableNum(); i++){
         if(DBManager::getTableName(i) == pageName){
+            noTable = false;
             break;
+        }else{
+            noTable = true;
         }
-        DBManager::createTable(pageName);
     }
+    if(noTable) DBManager::createTable(pageName);
 
     containarItem = DBManager::setupContainer(pageName);
     for(int i = 0; i < containarItem.count(); i++){
