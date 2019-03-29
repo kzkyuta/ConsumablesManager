@@ -31,13 +31,14 @@ public:
     QString getPageName();
     void setPageId(int);
 
+    QPushButton *backButton;
+    QPushButton *cancelButton;
+
 protected slots:
     void on_backButton_clicked();
     void on_cancelButton_clicked();
 
 protected:
-    QPushButton *backButton;
-    QPushButton *cancelButton;
     QLabel *titleLabel;
 
 private:

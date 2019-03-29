@@ -24,12 +24,10 @@ public:
 
 private slots:
     void on_button_1_clicked();
-
     void on_button_2_clicked();
-
     void on_button_3_clicked();
-
     void on_button_4_clicked();
+    void backToInitPage();
 
 private:
     Ui::MainWindow *ui;

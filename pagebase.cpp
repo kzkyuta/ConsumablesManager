@@ -51,9 +51,6 @@ PageBase::PageBase(int pageId, QWidget *parent):
 
 
 //    db.close();
-
-    connect(backButton, SIGNAL(clicked()), this, SLOT(on_backButton_clicked()));
-    connect(cancelButton, SIGNAL(clicked()), this, SLOT(on_cancelButton_clicked()));
 }
 
 PageBase::~PageBase(){}

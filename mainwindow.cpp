@@ -25,12 +25,25 @@ MainWindow::MainWindow(QWidget *parent):
         DBManager::createTable(hygienePage->getPageName());
         DBManager::createTable(othersPage->getPageName());
     }
+    connect(officePage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(engineeringPage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(hygienePage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(othersPage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(officePage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(engineeringPage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(hygienePage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(othersPage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
 }
 
 MainWindow::~MainWindow(){
     qInfo() << "close database";
     DBManager::closeDB();
     delete ui;
+}
+
+void MainWindow::backToInitPage(){
+    qInfo() << "backToInitPage";
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
 void MainWindow::on_button_1_clicked(){
