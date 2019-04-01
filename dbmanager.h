@@ -7,8 +7,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QFile>
-
-#include "itemcontainer.h"
+#include <QDebug>
 
 class DBManager
 {
@@ -20,8 +19,7 @@ public:
     static void openDB();
     static void closeDB();
     static void createTable(QString);
-    static void setupContainer(QVector<ItemContainer*>, QString);
-    static QVector<ItemContainer*> setupContainer(QString);
+    static QJsonArray setupContainer(QString);
     static int countTableNum();
     static QString getTableName(int);
 };

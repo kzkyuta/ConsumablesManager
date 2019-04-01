@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QDebug>
 #include <QVBoxLayout>
+#include <QJsonArray>
 
 class ItemContainer : public QFrame
 {
@@ -34,6 +35,7 @@ private:
     QString name;
     QVBoxLayout *VLayout;
     QLabel *itemTitle;
+    QJsonArray tempArray;
     void setContainerColor();
 };
 

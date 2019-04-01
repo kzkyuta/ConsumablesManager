@@ -54,6 +54,7 @@ private:
     ItemContainer *test;
     QStringList itemList;
     QStringList tableList;
+    QJsonArray tempArray;
     void createDB(QSqlDatabase);
     void setupItemContainer(QSqlDatabase);
 

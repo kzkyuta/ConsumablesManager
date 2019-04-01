@@ -49,9 +49,11 @@ PageBase::PageBase(int pageId, QWidget *parent):
     }
     if(noTable) DBManager::createTable(pageName);
 
-    containarItem = DBManager::setupContainer(pageName);
-    for(int i = 0; i < containarItem.count(); i++){
-        scroll->addWidget(containarItem[i], i/3 , i%3);
+    tempArray = DBManager::setupContainer(pageName);
+    for(int i = 0; i < tempArray.size(); i++){
+        QJsonObject temp = tempArray[i].toObject();
+        containarItem.append(new ItemContainer(temp["name"].toString(), temp["id"].toInt(), temp["status"].toInt()));
+        scroll->addWidget(containarItem.back(),i/3, i%3);
     }
 }
 
