@@ -1,10 +1,11 @@
 #include "itemcontainer.h"
 
-ItemContainer::ItemContainer(QString _name, int _id, int _status, QWidget *parent):
+ItemContainer::ItemContainer(QString _name, int _id, int _status, QString _pageName, QWidget *parent):
     name(_name),
     id(_id),  // TODO:why ??
     status(_status)
 {
+    pageName = _pageName;
     this->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed));
     this->setMinimumSize(0,verticalHeght);
     this->setFrameShape(Panel);
@@ -31,9 +32,15 @@ ItemContainer::~ItemContainer(){}
 void ItemContainer::on_orderButton_clicked(){
     int newStatus = this->getStatus()+1;
     qInfo() << this->getStatus();
-    if(newStatus > 3) setStatus(0);
-    else this->setStatus(newStatus);
-
+    if(newStatus >= 3){
+        setStatus(0);
+        DBManager::changeState(this->pageName, this->getId(), 0);
+//        DBManager::changeState(this->pageName, this->getName(), 0);
+    }else{
+        this->setStatus(newStatus);
+        DBManager::changeState(this->pageName, this->getId(), newStatus);
+//        DBManager::changeState(this->pageName, this->getName(), newStatus);
+    }
     // after confirming sending to slack, change the color.
     this->setContainerColor();
 }
@@ -60,6 +67,10 @@ void ItemContainer::setId(int _id){
     }else{
         id = _id;
     }
+}
+
+QString ItemContainer::getName(){
+    return name;
 }
 
 void ItemContainer::setContainerColor(){
