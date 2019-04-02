@@ -23,6 +23,7 @@ ItemContainer::ItemContainer(QString _name, int _id, int _status, QString _pageN
 
     connect(orderButton, SIGNAL(clicked()), this, SLOT(on_orderButton_clicked()));
 //    connect(orderButton, SIGNAL(clicked()), this, SLOT(on_orderBtn_clicked()));
+    this->setContainerColor();
 }
 
 int ItemContainer::verticalHeght = 240;
