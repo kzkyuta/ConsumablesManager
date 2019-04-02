@@ -82,3 +82,19 @@ QJsonArray DBManager::setupContainer(QString _pageName){
 QString DBManager::getTableName(int _i){
     return db.tables().at(_i);
 }
+
+void DBManager::changeState(QString _tableName, QString _itemName,int _status){
+    QSqlQuery query(db);
+    QString a;
+    query.exec("UPDATE " + _tableName + " SET status = " + QString::number(_status) + " WHERE name = " + _itemName);
+    a = "UPDATE " + _tableName + " SET status = " + QString::number(_status) + " WHERE name = " + _itemName;
+    qDebug() << a;
+}
+
+void DBManager::changeState(QString _tableName, int _itemId,int _status){
+    QSqlQuery query(db);
+    QString a;
+    query.exec("UPDATE " + _tableName + " SET status = " + QString::number(_status) + " WHERE id = " + QString::number(_itemId));
+    a = "UPDATE " + _tableName + " SET status = " + QString::number(_status) + " WHERE id = " + QString::number(_itemId);
+    qDebug() << a;
+}

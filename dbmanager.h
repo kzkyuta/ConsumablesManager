@@ -22,6 +22,8 @@ public:
     static QJsonArray setupContainer(QString);
     static int countTableNum();
     static QString getTableName(int);
+    static void changeState(QString, QString, int);
+    static void changeState(QString, int, int);
 };
 
 #endif // DBMANAGER_H
