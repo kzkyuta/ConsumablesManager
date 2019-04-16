@@ -32,7 +32,8 @@ SOURCES += \
     verticalscrollarea.cpp \
     pagebase.cpp \
     itemcontainer.cpp \
-    dbmanager.cpp
+    dbmanager.cpp \
+    mydialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,7 +41,8 @@ HEADERS += \
     verticalscrollarea.h \
     pagebase.h \
     itemcontainer.h \
-    dbmanager.h
+    dbmanager.h \
+    mydialog.h
 
 FORMS += \
         mainwindow.ui \

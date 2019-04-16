@@ -7,8 +7,11 @@
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QJsonArray>
+#include <QMessageBox>
+#include <QDialogButtonBox>
 
 #include "dbmanager.h"
+#include "mydialog.h"
 
 class ItemContainer : public QFrame
 {
@@ -41,6 +44,9 @@ private:
     QLabel *itemTitle;
     QJsonArray tempArray;
     void setContainerColor();
+    QMessageBox msgBox;
+    MyDialog mMsgBox;
+    QDialogButtonBox* msgButtonBox;
 };
 
 #endif // ITEMCONTAINER_H

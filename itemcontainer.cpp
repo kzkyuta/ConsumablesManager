@@ -17,6 +17,13 @@ ItemContainer::ItemContainer(QString _name, int _id, int _status, QString _pageN
     VLayout->addWidget(itemTitle);
     VLayout->addWidget(orderButton);
 
+    msgBox.setText(tr("Are you sure to order this item?"));
+    msgBox.setWindowTitle(tr("Confirmation"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    msgBox.setIcon(QMessageBox::Question);
+//    msgBox
+
     // This may be related to some bug. it seems change object name.
     // This is for reference to change stype.
     this->setObjectName("SendContainerFrame");
@@ -31,17 +38,25 @@ int ItemContainer::verticalHeght = 240;
 ItemContainer::~ItemContainer(){}
 
 void ItemContainer::on_orderButton_clicked(){
-    int newStatus = this->getStatus()+1;
-    qInfo() << this->getStatus();
-    if(newStatus >= 3){
-        setStatus(0);
-        DBManager::changeState(this->pageName, this->getId(), 0);
-//        DBManager::changeState(this->pageName, this->getName(), 0);
+    int res = msgBox.exec();
+//    int res = mMsgBox.exec();
+    if(res == QMessageBox::Yes){
+//    if(res == QDialogButtonBox::YesRole){
+        int newStatus = this->getStatus()+1;
+        qInfo() << this->getStatus();
+        if(newStatus >= 3){
+            setStatus(0);
+            DBManager::changeState(this->pageName, this->getId(), 0);
+    //        DBManager::changeState(this->pageName, this->getName(), 0);
+        }else{
+            this->setStatus(newStatus);
+            DBManager::changeState(this->pageName, this->getId(), newStatus);
+    //        DBManager::changeState(this->pageName, this->getName(), newStatus);
+        }
     }else{
-        this->setStatus(newStatus);
-        DBManager::changeState(this->pageName, this->getId(), newStatus);
-//        DBManager::changeState(this->pageName, this->getName(), newStatus);
+        return;
     }
+
     // after confirming sending to slack, change the color.
     this->setContainerColor();
 }
