@@ -13,6 +13,8 @@ from slackeventsapi import SlackEventAdapter
 from slackclient import SlackClient
 import os
 import json
+from socket import *
+import threading
 
 # token from slack api manager page
 slack_bot_token = "xoxb-170654737781-602026864064-nRWcflzpTNnZs2SLToUuPEWG"
@@ -37,6 +39,15 @@ def handle_message(event_data):
         channel = message["channel"]
         message = "Hello <@%s>! :tada:" % message["user"]
         slack_client.api_call("chat.postMessage", channel=channel, text=message)
+
+# the thread for udp receiving, it is needed to call from Flask. which means call using "curl https://******.ngrok.io/python/thread_start"
+@app.route("/python/thread_start", methods = ["GET"])
+def thread_start():
+    th = ServerThread()
+    th.setDaemon(True)
+    th.start()
+
+    return make_response("", 200)
 
 # Example responder to greetings
 @app.route("/slack/events", methods = ["GET"])
@@ -84,6 +95,14 @@ def json_html():
         )
 
     return make_response("", 200)
+
+# send UDP Signal
+def transmit(data):
+    UDP_IP = "127.0.0.1"
+    UDP_PORT = 6666
+    sock = socket.socket(socket.AF_INET,  # Internet
+                         socket.SOCK_DGRAM)  # UDP
+    sock.sendto(data, (UDP_IP, UDP_PORT))
 
 # your attachment
 attachments_json = [
@@ -189,9 +208,36 @@ received_message_json = [
     }
 ]
 
+# thread for udp server. builed the class and call it using curl. I do not know why I need to call like this.
+class ServerThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.kill_flag = False
+        self.udpServSock = socket(AF_INET, SOCK_DGRAM)
+        self.udpServSock.bind(("127.0.0.1", 5824))
+        self.BUFSIZE = 1024
+        self.data = "a"
+        print(self.data)
+
+    def run(self):
+        print("a")
+        while True:
+            try:
+                self.data = self.udpServSock.recvfrom(self.BUFSIZE)
+                slack_client.api_call(
+                    "chat.postMessage",
+                    channel="#test",
+                    text="You have got an order !",
+                    attachments=ordering_message_json
+                )
+                print(self.data)
+            except:
+                pass
+
 if __name__ == '__main__':
     app.debug = True
     app.run(port=3000)
+
 # Once we have our event listeners configured, we can start the
 # Flask server with the default `/events` endpoint on port 3000
 # slack_events_adapter.start(port=3000)
