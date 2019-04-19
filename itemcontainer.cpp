@@ -22,7 +22,6 @@ ItemContainer::ItemContainer(QString _name, int _id, int _status, QString _pageN
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     msgBox.setIcon(QMessageBox::Question);
-//    msgBox
 
     // This may be related to some bug. it seems change object name.
     // This is for reference to change stype.
@@ -102,3 +101,12 @@ void ItemContainer::setContainerColor(){
         this->setStyleSheet("#SendContainerFrame {background-color: blue;}");
     }
 }
+
+void ItemContainer::sendOrderedSignal(){
+    QUdpSocket sendPort;
+    QByteArray datagram;
+    QDataStream out(&datagram, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_1);
+    out << name;
+    sendPort.writeDatagram(datagram, QHostAddress::LocalHost, 5824);
+};

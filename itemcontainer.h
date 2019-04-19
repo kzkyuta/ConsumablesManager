@@ -9,6 +9,7 @@
 #include <QJsonArray>
 #include <QMessageBox>
 #include <QDialogButtonBox>
+#include <QUdpSocket>
 
 #include "dbmanager.h"
 #include "mydialog.h"
@@ -47,6 +48,7 @@ private:
     QMessageBox msgBox;
     MyDialog mMsgBox;
     QDialogButtonBox* msgButtonBox;
+    void sendOrderedSignal();
 };
 
 #endif // ITEMCONTAINER_H
