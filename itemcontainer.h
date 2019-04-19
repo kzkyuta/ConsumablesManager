@@ -49,6 +49,7 @@ private:
     MyDialog mMsgBox;
     QDialogButtonBox* msgButtonBox;
     void sendOrderedSignal();
+    void changeButtonState();
 };
 
 #endif // ITEMCONTAINER_H

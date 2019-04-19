@@ -57,7 +57,9 @@ void ItemContainer::on_orderButton_clicked(){
     }
 
     // after confirming sending to slack, change the color.
+    this->sendOrderedSignal();
     this->setContainerColor();
+//    this->changeButtonState();  // set button disabled.
 }
 
 int ItemContainer::getStatus(){
@@ -100,6 +102,11 @@ void ItemContainer::setContainerColor(){
     case 2:
         this->setStyleSheet("#SendContainerFrame {background-color: blue;}");
     }
+}
+
+void ItemContainer::changeButtonState(){
+    if(status == 0) orderButton->setEnabled(true);
+    else orderButton->setEnabled(false);
 }
 
 void ItemContainer::sendOrderedSignal(){
