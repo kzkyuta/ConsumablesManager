@@ -41,12 +41,11 @@ def handle_message(event_data):
 # Example responder to greetings
 @app.route("/slack/events", methods = ["GET"])
 def index():
-    print("OK")
     slack_client.api_call(
         "chat.postMessage",
         channel="#test",
-        text="Which do you like ?",
-        attachments=attachments_json
+        text="You have got an order !",
+        attachments=ordering_message_json
     )
     return make_response("", 200)
 
@@ -56,18 +55,34 @@ def json_html():
 
     # Parse the request payload
     form_json = json.loads(request.form["payload"])
-
+    timeStamp = form_json["original_message"]["ts"]
+    slackChannel = form_json["channel"]["id"]
     val = form_json["actions"][0]["value"]
-    if val == "kinoko":
-        response_text = "battle"
+
+    if val == "done":
+        response = slack_client.api_call(
+            "chat.update",
+            ts = timeStamp,
+            channel=slackChannel,
+            text = "",
+            attachments = reply_ordered_message
+        )
+
+        slack_client.api_call(
+            "chat.postMessage",
+            channel=slackChannel,
+            text="",
+            attachments=received_message_json
+        )
     else:
-        response_text = "friend"
-    response = slack_client.api_call(
-        "chat.postMessage",
-        channel="#test",
-        text=response_text,
-        attachments=[]
-    )
+        response = slack_client.api_call(
+            "chat.update",
+            ts = timeStamp,
+            channel=slackChannel,
+            text = "",
+            attachments = reply_received_message
+        )
+
     return make_response("", 200)
 
 # your attachment
@@ -91,6 +106,86 @@ attachments_json = [
                 "type": "button"
             }
         ]
+    }
+]
+
+reply_ordered_message = [
+    {
+        "title" : "Thank you for ordering !",
+        # "text" : "when you receive package, please put correct place",
+        "fallback" : "bbb",
+        "color": "#3AA3E3",
+        "attachment_type": "default",
+        "callback_id": "reply",
+        "actions" : []
+    }
+]
+
+reply_received_message = [
+    {
+        "title" : "Thank you for receiving package !",
+        "text" : "This ordering have finished.:tada:",
+        "fallback" : "bbb",
+        "color": "#DC143C",
+        "attachment_type": "default",
+        "callback_id": "reply",
+        "actions" : []
+    }
+]
+
+ordering_message_json = [
+    {
+        "title" : "New Order Aleart !",
+        "text" : "Please finish ordering using  the URL below \n kzkyuta.net",
+        "fallback": "aaa",
+        "color": "#3AA3E3",
+        "attachment_type": "default",
+        "callback_id": "done",
+        "actions" : [
+            {
+                "name" : "done",
+                "text" : "Done",
+                "type" : "button",
+                "value" : "done",
+                "style": "primary",
+                "confirm" : {
+                    "title" : "Are you sure ?",
+                    "text" : "Have you ordered ?",
+                    "ok_text" : "Yes",
+                    "dismiss_text" : "No"
+                }
+            }
+        ]
+
+
+    }
+]
+
+received_message_json = [
+    {
+        "title" : "Once you have received package, Finish this ordering !",
+        "text" : "when you receive and put it back to correct place, please push the button and finish this ordering.",
+        "fallback": "aaa",
+        "color": "#DC143C",
+        "attachment_type": "default",
+        "callback_id": "received",
+        "actions" : [
+            {
+                "name" : "received",
+                "text" : "Received",
+                "type" : "button",
+                "value" : "received",
+                "style": "primary",
+                "confirm" : {
+                    "title" : "Are you sure ?",
+                    "text" : "Have you received package ?",
+                    "ok_text" : "Yes",
+                    "dismiss_text" : "No"
+                }
+            }
+        ]
+
+
     }
 ]
 
