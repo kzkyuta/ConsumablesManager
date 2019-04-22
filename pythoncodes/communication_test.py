@@ -148,18 +148,6 @@ reply_received_message = [
         "color": "#DC143C",
         "attachment_type": "default",
         "callback_id": "reply",
-        "actions" : []
-    }
-]
-
-ordering_message_json = [
-    {
-        "title" : "New Order Aleart !",
-        "text" : "Please finish ordering using  the URL below \n kzkyuta.net",
-        "fallback": "aaa",
-        "color": "#3AA3E3",
-        "attachment_type": "default",
-        "callback_id": "done",
         "actions" : [
             {
                 "name" : "done",
@@ -175,10 +163,32 @@ ordering_message_json = [
                 }
             }
         ]
-
-
     }
 ]
+
+ordering_message_json = {
+    "title" : "New Order Aleart !",
+    "text" : "Please finish ordering using the URL below !!!! \n kzkyuta.net",
+    "fallback": "aaa",
+    "color": "#3AA3E3",
+    "attachment_type": "default",
+    "callback_id": "done",
+    "actions" : [
+        {
+            "name" : "done",
+            "text" : "Done",
+            "type" : "button",
+            "value" : "done",
+            "style": "primary",
+            "confirm" : {
+                "title" : "Are you sure ?",
+                "text" : "Have you ordered ?",
+                "ok_text" : "Yes",
+                "dismiss_text" : "No"
+            }
+        }
+    ]
+}
 
 received_message_json = [
     {
@@ -203,8 +213,6 @@ received_message_json = [
                 }
             }
         ]
-
-
     }
 ]
 
@@ -220,17 +228,22 @@ class ServerThread(threading.Thread):
         print(self.data)
 
     def run(self):
-        print("a")
         while True:
             try:
-                self.data = self.udpServSock.recvfrom(self.BUFSIZE)
+                data, addr = self.udpServSock.recvfrom(self.BUFSIZE)
+                recv_msg = json.loads(data)
+
+                ordering_message_json["text"] = "Please finish ordering " + recv_msg["name"] + " from " + recv_msg["pageName"] + "\nURL:kzkyuta.net"
+
+                jsonOut = []
+                jsonOut.append(ordering_message_json)
+
                 slack_client.api_call(
                     "chat.postMessage",
                     channel="#test",
                     text="You have got an order !",
-                    attachments=ordering_message_json
+                    attachments=jsonOut
                 )
-                print(self.data)
             except:
                 pass
 
