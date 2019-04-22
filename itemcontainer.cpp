@@ -112,8 +112,10 @@ void ItemContainer::changeButtonState(){
 void ItemContainer::sendOrderedSignal(){
     QUdpSocket sendPort;
     QByteArray datagram;
-    QDataStream out(&datagram, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_4_1);
-    out << name;
-    sendPort.writeDatagram(datagram, QHostAddress::LocalHost, 5824);
+    QJsonObject jsonObj;
+    jsonObj["pageName"] = this->pageName;
+    jsonObj["name"] = this->name;
+    QJsonDocument jsonDoc(jsonObj);
+    QByteArray ba = jsonDoc.toJson();
+    sendPort.writeDatagram(ba.data(), QHostAddress::LocalHost, 5824);
 };

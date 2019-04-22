@@ -7,6 +7,9 @@
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QMessageBox>
 #include <QDialogButtonBox>
 #include <QUdpSocket>
