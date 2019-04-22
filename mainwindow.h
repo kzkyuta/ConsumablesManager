@@ -6,6 +6,7 @@
 #include <QStackedWidget>
 #include <QIntegerForSize>
 #include <QDebug>
+#include <QUdpSocket>
 
 #include "dbmanager.h"
 #include "pagebase.h"
@@ -28,6 +29,7 @@ private slots:
     void on_button_3_clicked();
     void on_button_4_clicked();
     void backToInitPage();
+    void receiveUDP();
 
 private:
     Ui::MainWindow *ui;
@@ -36,7 +38,8 @@ private:
     PageBase *hygienePage;
     PageBase *othersPage;
     QSqlDatabase db;
-//    SecondPage *secondPage;
+
+    QUdpSocket *receiveSocket;
 };
 
 #endif // MAINWINDOW_H

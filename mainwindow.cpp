@@ -18,6 +18,10 @@ MainWindow::MainWindow(QWidget *parent):
     ui->stackedWidget->addWidget(hygienePage);
     ui->stackedWidget->addWidget(othersPage);
 
+    receiveSocket = new QUdpSocket(this);
+    bool result =  receiveSocket->bind(QHostAddress::AnyIPv4, 5825);
+    qInfo() << "connection Result is" << result;
+
     connect(officePage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
     connect(engineeringPage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
     connect(hygienePage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
@@ -26,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent):
     connect(engineeringPage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
     connect(hygienePage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
     connect(othersPage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(receiveSocket, SIGNAL(readyRead()), this, SLOT(receiveUDP()));
 }
 
 MainWindow::~MainWindow(){
@@ -60,4 +65,11 @@ void MainWindow::on_button_4_clicked()
 {
     qDebug() << othersPage->getPageId();
     ui->stackedWidget->setCurrentIndex(othersPage->getPageId());
+}
+
+void MainWindow::receiveUDP(){
+    QByteArray datagram;
+    datagram.resize(receiveSocket->pendingDatagramSize());
+    receiveSocket->readDatagram(datagram.data(), datagram.size());
+    qInfo() << "received";
 }
