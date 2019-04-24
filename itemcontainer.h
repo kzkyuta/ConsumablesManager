@@ -22,7 +22,7 @@ class ItemContainer : public QFrame
     Q_OBJECT
 
 public:
-    explicit ItemContainer(QString, int, int, QString _parentName, QWidget *parent = nullptr);
+    explicit ItemContainer(QString, int, int, QString, QString, QWidget *parent = nullptr);
     ~ItemContainer();
 
     int getStatus();
@@ -44,6 +44,7 @@ private:
     int id;
     QString pageName;
     QString name;
+    QString url;
     QVBoxLayout *VLayout;
     QLabel *itemTitle;
     QJsonArray tempArray;

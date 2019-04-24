@@ -72,6 +72,7 @@ QJsonArray DBManager::setupContainer(QString _pageName){
         jsonChild["id"] = query.value(0).toInt();
         jsonChild["name"] = query.value(1).toString();
         jsonChild["status"] = query.value(2).toInt();
+        jsonChild["URL"] = query.value(3).toString();
         jsonArr.append(jsonChild);
 //        qDebug() << QString("id(%1),name(%2),status(%3),URL(%4),archive(%5)").arg(id).arg(name).arg(status).arg(URL).arg(archive);
     }

@@ -233,7 +233,7 @@ class ServerThread(threading.Thread):
                 data, addr = self.udpServSock.recvfrom(self.BUFSIZE)
                 recv_msg = json.loads(data)
 
-                ordering_message_json["text"] = "Please finish ordering " + recv_msg["name"] + " from " + recv_msg["pageName"] + "\nURL:kzkyuta.net"
+                ordering_message_json["text"] = "Please finish ordering " + recv_msg["name"] + " from " + recv_msg["pageName"] + "\n" +recv_msg["URL"]
 
                 jsonOut = []
                 jsonOut.append(ordering_message_json)

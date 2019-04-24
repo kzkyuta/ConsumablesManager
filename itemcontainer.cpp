@@ -1,10 +1,11 @@
 #include "itemcontainer.h"
 
-ItemContainer::ItemContainer(QString _name, int _id, int _status, QString _pageName, QWidget *parent):
+ItemContainer::ItemContainer(QString _name, int _id, int _status, QString _pageName, QString _url, QWidget *parent):
     name(_name),
     id(_id),  // TODO:why ??
     status(_status)
 {
+    url = _url;
     pageName = _pageName;
     this->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed));
     this->setMinimumSize(0,verticalHeght);
@@ -115,7 +116,8 @@ void ItemContainer::sendOrderedSignal(){
     QJsonObject jsonObj;
     jsonObj["pageName"] = this->pageName;
     jsonObj["name"] = this->name;
+    jsonObj["URL"] = this->url;
     QJsonDocument jsonDoc(jsonObj);
     QByteArray ba = jsonDoc.toJson();
     sendPort.writeDatagram(ba.data(), QHostAddress::LocalHost, 5824);
-};
+}

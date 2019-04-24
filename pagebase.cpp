@@ -52,7 +52,7 @@ PageBase::PageBase(int pageId, QWidget *parent):
     tempArray = DBManager::setupContainer(pageName);
     for(int i = 0; i < tempArray.size(); i++){
         QJsonObject temp = tempArray[i].toObject();
-        containarItem.append(new ItemContainer(temp["name"].toString(), temp["id"].toInt(), temp["status"].toInt(), this->getPageName()));
+        containarItem.append(new ItemContainer(temp["name"].toString(), temp["id"].toInt(), temp["status"].toInt(), this->getPageName(), temp["URL"].toString()));
         scroll->addWidget(containarItem.back(),i/3, i%3);
     }
 }
@@ -152,8 +152,9 @@ void PageBase::setupItemContainer(QSqlDatabase db){
         QString name = query.value(1).toString();
         int status = query.value(2).toInt();
         QString URL = query.value(3).toString();
+        qInfo() << URL;
         int archive = query.value(4).toInt();
-        containarItem.append(new ItemContainer(name,id, status, this->getPageName()));
+        containarItem.append(new ItemContainer(name,id, status, this->getPageName(), URL));
         scroll->addWidget(containarItem.back(), i/3 , i%3);
         i ++;
         qDebug() << QString("id(%1),name(%2),status(%3),URL(%4),archive(%5)").arg(id).arg(name).arg(status).arg(URL).arg(archive);
