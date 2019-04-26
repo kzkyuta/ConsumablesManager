@@ -72,6 +72,7 @@ def json_html():
     name = form_json["actions"][0]["name"]
     fallback = form_json["original_message"]["attachments"][0]["fallback"]
 
+    # when the "done" btn was pushed on slack interface
     if val == "done":
         response = slack_client.api_call(
             "chat.update",
@@ -80,7 +81,13 @@ def json_html():
             text = "",
             attachments = reply_ordered_message
         )
-        # transmit(val)
+
+        reply_message = {}
+        reply_message["val"] = val
+        reply_message["name"] = name
+        reply_message["pageName"] = fallback
+        # transmit(reply_message)
+        transmit(val)
 
         received_message_json["fallback"] = fallback
         received_message_json["actions"][0]["name"] = name
@@ -104,15 +111,17 @@ def json_html():
             text = "",
             attachments = reply_received_message
         )
-
+        transmit(received)
     return make_response("", 200)
 
 # send UDP Signal
 def transmit(data):
     UDP_IP = "127.0.0.1"
-    UDP_PORT = 6666
-    sock = socket.socket(socket.AF_INET,  # Internet
-                         socket.SOCK_DGRAM)  # UDP
+    UDP_PORT = 5826
+    # sock = socket(socket.AF_INET,  # Internet
+    #                      socket.SOCK_DGRAM)  # UDP
+    sock = socket(AF_INET,  # Internet
+                         SOCK_DGRAM)  # UDP
     sock.sendto(data, (UDP_IP, UDP_PORT))
 
 # reply messag after pushing "done" btn
