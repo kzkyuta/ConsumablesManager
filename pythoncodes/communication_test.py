@@ -17,7 +17,7 @@ from socket import *
 import threading
 
 # token from slack api manager page
-slack_bot_token = "xoxb-170654737781-602026864064-nRWcflzpTNnZs2SLToUuPEWG"
+slack_bot_token = "xoxb-170654737781-602026864064-jtsgIqk1IVKy79YsJj4S6LoO"
 slack_signing_secret = "09e62ca3df5b1fea582cda5aff964eb2"
 
 # Build slack client with slack bot token from oath page
@@ -69,6 +69,8 @@ def json_html():
     timeStamp = form_json["original_message"]["ts"]
     slackChannel = form_json["channel"]["id"]
     val = form_json["actions"][0]["value"]
+    name = form_json["actions"][0]["name"]
+    fallback = form_json["original_message"]["attachments"][0]["fallback"]
 
     if val == "done":
         response = slack_client.api_call(
@@ -78,12 +80,21 @@ def json_html():
             text = "",
             attachments = reply_ordered_message
         )
+        # transmit(val)
+
+        received_message_json["fallback"] = fallback
+        received_message_json["actions"][0]["name"] = name
+        received_message_json["text"] = "when you receive " + name + " and put it back to correct place, please push the button and finish this ordering."
+        received_message_json["image_url"] = "https://github.com/kzkyuta/ConsumablesManager/blob/feature/UDP_connection_btw_python_and_Qt/DataBase/img/" + name + ".jpg?raw=true"
+
+        jsonOut = []
+        jsonOut.append(received_message_json)
 
         slack_client.api_call(
             "chat.postMessage",
             channel=slackChannel,
             text="",
-            attachments=received_message_json
+            attachments=jsonOut
         )
     else:
         response = slack_client.api_call(
@@ -104,41 +115,16 @@ def transmit(data):
                          socket.SOCK_DGRAM)  # UDP
     sock.sendto(data, (UDP_IP, UDP_PORT))
 
-# your attachment
-attachments_json = [
-    {
-        "fallback": "Upgrade your Slack client to use messages like these.",
-        "color": "#258ab5",
-        "attachment_type": "default",
-        "callback_id": "the_greatest_war",
-        "actions": [
-            {
-                "name": "choco1",
-                "text": "kinoko",
-                "value": "kinoko",
-                "type": "button"
-            },
-            {
-                "name": "choco2",
-                "text": "takenoko",
-                "value": "takenoko",
-                "type": "button"
-            }
-        ]
-    }
-]
-
-reply_ordered_message = [
-    {
-        "title" : "Thank you for ordering !",
-        # "text" : "when you receive package, please put correct place",
-        "fallback" : "bbb",
-        "color": "#3AA3E3",
-        "attachment_type": "default",
-        "callback_id": "reply",
-        "actions" : []
-    }
-]
+# reply messag after pushing "done" btn
+reply_ordered_message = [{
+    "title" : "Thank you for ordering !",
+    # "text" : "when you receive package, please put correct place",
+    "fallback" : "bbb",
+    "color": "#3AA3E3",
+    "attachment_type": "default",
+    "callback_id": "reply",
+    "actions" : []
+}]
 
 reply_received_message = [
     {
@@ -148,31 +134,18 @@ reply_received_message = [
         "color": "#DC143C",
         "attachment_type": "default",
         "callback_id": "reply",
-        "actions" : [
-            {
-                "name" : "done",
-                "text" : "Done",
-                "type" : "button",
-                "value" : "done",
-                "style": "primary",
-                "confirm" : {
-                    "title" : "Are you sure ?",
-                    "text" : "Have you ordered ?",
-                    "ok_text" : "Yes",
-                    "dismiss_text" : "No"
-                }
-            }
-        ]
+        "actions" : []
     }
 ]
 
 ordering_message_json = {
     "title" : "New Order Aleart !",
     "text" : "Please finish ordering using the URL below !!!! \n kzkyuta.net",
-    "fallback": "aaa",
+    "fallback": "bbb",
     "color": "#3AA3E3",
     "attachment_type": "default",
     "callback_id": "done",
+    "image_url": "https://github.com/kzkyuta/ConsumablesManager/blob/feature/UDP_connection_btw_python_and_Qt/DataBase/img/Curing_tape.jpg?raw=true",
     "actions" : [
         {
             "name" : "done",
@@ -190,31 +163,29 @@ ordering_message_json = {
     ]
 }
 
-received_message_json = [
-    {
-        "title" : "Once you have received package, Finish this ordering !",
-        "text" : "when you receive and put it back to correct place, please push the button and finish this ordering.",
-        "fallback": "aaa",
-        "color": "#DC143C",
-        "attachment_type": "default",
-        "callback_id": "received",
-        "actions" : [
-            {
-                "name" : "received",
-                "text" : "Received",
-                "type" : "button",
-                "value" : "received",
-                "style": "primary",
-                "confirm" : {
-                    "title" : "Are you sure ?",
-                    "text" : "Have you received package ?",
-                    "ok_text" : "Yes",
-                    "dismiss_text" : "No"
-                }
+received_message_json = {
+    "title" : "Once you have received package, Finish this ordering !",
+    "text" : "when you receive and put it back to correct place, please push the button and finish this ordering.",
+    "fallback": "aaa",
+    "color": "#DC143C",
+    "attachment_type": "default",
+    "callback_id": "received",
+    "actions" : [
+        {
+            "name" : "received",
+            "text" : "Received",
+            "type" : "button",
+            "value" : "received",
+            "style": "primary",
+            "confirm" : {
+                "title" : "Are you sure ?",
+                "text" : "Have you received package ?",
+                "ok_text" : "Yes",
+                "dismiss_text" : "No"
             }
-        ]
-    }
-]
+        }
+    ]
+}
 
 # thread for udp server. builed the class and call it using curl. I do not know why I need to call like this.
 class ServerThread(threading.Thread):
@@ -232,12 +203,13 @@ class ServerThread(threading.Thread):
             try:
                 data, addr = self.udpServSock.recvfrom(self.BUFSIZE)
                 recv_msg = json.loads(data)
-
-                ordering_message_json["text"] = "Please finish ordering " + recv_msg["name"] + " from " + recv_msg["pageName"] + "\n" +recv_msg["URL"]
+                ordering_message_json["text"] = "Please finish ordering below\n" + recv_msg["name"] + " from " + recv_msg["pageName"] + " Category\n" +recv_msg["URL"]
+                ordering_message_json["fallback"] = recv_msg["pageName"]
+                ordering_message_json["actions"][0]["name"] = recv_msg["name"]
+                ordering_message_json["image_url"] = "https://github.com/kzkyuta/ConsumablesManager/blob/feature/UDP_connection_btw_python_and_Qt/DataBase/img/" + recv_msg["name"] + ".jpg?raw=true"
 
                 jsonOut = []
                 jsonOut.append(ordering_message_json)
-
                 slack_client.api_call(
                     "chat.postMessage",
                     channel="#test",
