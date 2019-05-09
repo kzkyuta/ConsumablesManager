@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent):
     ui->stackedWidget->addWidget(othersPage);
 
     receiveSocket = new QUdpSocket(this);
-    bool result =  receiveSocket->bind(QHostAddress::AnyIPv4, 5825);
+    bool result =  receiveSocket->bind(QHostAddress::AnyIPv4, 5826);
     qInfo() << "connection Result is" << result;
 
     connect(officePage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
@@ -71,5 +71,19 @@ void MainWindow::receiveUDP(){
     QByteArray datagram;
     datagram.resize(receiveSocket->pendingDatagramSize());
     receiveSocket->readDatagram(datagram.data(), datagram.size());
-    qInfo() << "received";
+    QJsonDocument jsondoc = QJsonDocument::fromJson(datagram);
+    QJsonObject jsonobj = jsondoc.object();
+    QString val = jsonobj.value(QString("val")).toString();
+    QString name = jsonobj.value(QString("name")).toString();
+    QString pageName = jsonobj.value(QString("pageName")).toString();
+
+    if(val == "done"){
+        DBManager::changeState(pageName, name, 2);
+    }else if(val == "received"){
+        DBManager::changeState(pageName, name, 0);
+    }
+}
+
+void MainWindow::updateDisplay(){
+
 }

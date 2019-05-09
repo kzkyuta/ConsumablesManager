@@ -46,12 +46,12 @@ void ItemContainer::on_orderButton_clicked(){
         qInfo() << this->getStatus();
         if(newStatus >= 3){
             setStatus(0);
-            DBManager::changeState(this->pageName, this->getId(), 0);
-    //        DBManager::changeState(this->pageName, this->getName(), 0);
+//            DBManager::changeState(this->pageName, this->getId(), 0);
+            DBManager::changeState(this->pageName, this->getName(), 0);
         }else{
             this->setStatus(newStatus);
-            DBManager::changeState(this->pageName, this->getId(), newStatus);
-    //        DBManager::changeState(this->pageName, this->getName(), newStatus);
+//            DBManager::changeState(this->pageName, this->getId(), newStatus);
+            DBManager::changeState(this->pageName, this->getName(), newStatus);
         }
     }else{
         return;

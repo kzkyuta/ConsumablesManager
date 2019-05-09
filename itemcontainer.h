@@ -29,6 +29,7 @@ public:
     void setStatus(int);
 
     int getId();
+    int getId(QString);
     void setId(int);
     QString getName();
     static int verticalHeght;
