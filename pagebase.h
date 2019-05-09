@@ -31,6 +31,8 @@ public:
     QString getPageName();
     void setPageId(int);
 
+    void updateStatus();
+
     QPushButton *backButton;
     QPushButton *cancelButton;
 

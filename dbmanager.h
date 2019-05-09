@@ -24,6 +24,7 @@ public:
     static QString getTableName(int);
     static void changeState(QString, QString, int);
     static void changeState(QString, int, int);
+    static int getState(QString, QString);
 };
 
 #endif // DBMANAGER_H

@@ -38,6 +38,7 @@ private:
     PageBase *hygienePage;
     PageBase *othersPage;
     QSqlDatabase db;
+    void updateContainars();
 
     QUdpSocket *receiveSocket;
 };

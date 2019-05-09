@@ -33,6 +33,7 @@ public:
     void setId(int);
     QString getName();
     static int verticalHeght;
+    void updateStatus();
 
 protected:
     QPushButton *orderButton;

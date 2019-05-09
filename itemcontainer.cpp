@@ -121,3 +121,15 @@ void ItemContainer::sendOrderedSignal(){
     QByteArray ba = jsonDoc.toJson();
     sendPort.writeDatagram(ba.data(), QHostAddress::LocalHost, 5824);
 }
+
+void ItemContainer::updateStatus(){
+    int tempStatus = DBManager::getState(this->pageName, this->name);
+    qInfo() << this->pageName << tempStatus;
+    if(tempStatus == 3){
+        qInfo() << "Error on updating status ! check ItemContainer::updateSutatus";
+    }else{
+        this->status = tempStatus;
+    }
+    this->setContainerColor();  // change the color of this container
+    this->changeButtonState();  // change the button state.
+}

@@ -99,3 +99,15 @@ void DBManager::changeState(QString _tableName, int _itemId,int _status){
     a = "UPDATE " + _tableName + " SET status = " + QString::number(_status) + " WHERE id = " + QString::number(_itemId);
     qDebug() << a;
 }
+
+int DBManager::getState(QString _pageName, QString _itemName){
+    int status = 3;
+    QSqlQuery query(db);
+    query.exec("select * from " +_pageName);
+    while (query.next()){
+        if(query.value(1).toString() == _itemName){
+            status = query.value(2).toInt();
+        }
+    }
+    return status;  // if this returns 3, it is error
+}

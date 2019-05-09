@@ -160,3 +160,9 @@ void PageBase::setupItemContainer(QSqlDatabase db){
         qDebug() << QString("id(%1),name(%2),status(%3),URL(%4),archive(%5)").arg(id).arg(name).arg(status).arg(URL).arg(archive);
     }
 }
+
+void PageBase::updateStatus(){
+    for(int i = 0; i < containarItem.size(); i++){
+        containarItem[i]->updateStatus();
+    }
+}

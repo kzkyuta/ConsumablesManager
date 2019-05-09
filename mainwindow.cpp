@@ -82,8 +82,13 @@ void MainWindow::receiveUDP(){
     }else if(val == "received"){
         DBManager::changeState(pageName, name, 0);
     }
+    this->updateContainars();
 }
 
-void MainWindow::updateDisplay(){
-
+void MainWindow::updateContainars(){
+    officePage->updateStatus();
+    engineeringPage->updateStatus();
+    othersPage->updateStatus();
+    hygienePage->updateStatus();
+    qInfo() << "OK!!!!";
 }
