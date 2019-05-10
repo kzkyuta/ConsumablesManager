@@ -46,13 +46,12 @@ void ItemContainer::on_orderButton_clicked(){
         qInfo() << this->getStatus();
         if(newStatus >= 3){
             setStatus(0);
-//            DBManager::changeState(this->pageName, this->getId(), 0);
-            DBManager::changeState(this->pageName, this->getName(), 0);
+            DBManager::changeState(this->pageName, this->getId(), 0);
         }else{
             this->setStatus(newStatus);
-//            DBManager::changeState(this->pageName, this->getId(), newStatus);
-            DBManager::changeState(this->pageName, this->getName(), newStatus);
+            DBManager::changeState(this->pageName, this->getId(), newStatus);
         }
+        qInfo() << "aaa" << DBManager::getState(this->pageName, this->getName());
     }else{
         return;
     }
@@ -115,6 +114,7 @@ void ItemContainer::sendOrderedSignal(){
     QByteArray datagram;
     QJsonObject jsonObj;
     jsonObj["pageName"] = this->pageName;
+    jsonObj["id"] = this->id;
     jsonObj["name"] = this->name;
     jsonObj["URL"] = this->url;
     QJsonDocument jsonDoc(jsonObj);
@@ -124,9 +124,8 @@ void ItemContainer::sendOrderedSignal(){
 
 void ItemContainer::updateStatus(){
     int tempStatus = DBManager::getState(this->pageName, this->name);
-    qInfo() << this->pageName << tempStatus;
     if(tempStatus == 3){
-        qInfo() << "Error on updating status ! check ItemContainer::updateSutatus";
+        qWarning() << "Error on updating status ! check ItemContainer::updateSutatus";
     }else{
         this->status = tempStatus;
     }

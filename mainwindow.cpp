@@ -74,13 +74,14 @@ void MainWindow::receiveUDP(){
     QJsonDocument jsondoc = QJsonDocument::fromJson(datagram);
     QJsonObject jsonobj = jsondoc.object();
     QString val = jsonobj.value(QString("val")).toString();
-    QString name = jsonobj.value(QString("name")).toString();
+    QString name = jsonobj.value(QString("name")).toString(); // id is needed
     QString pageName = jsonobj.value(QString("pageName")).toString();
+    int id = jsonobj.value(QString("callback_id")).toString().toInt();
 
     if(val == "done"){
-        DBManager::changeState(pageName, name, 2);
+        DBManager::changeState(pageName, id, 2);
     }else if(val == "received"){
-        DBManager::changeState(pageName, name, 0);
+        DBManager::changeState(pageName, id, 0);
     }
     this->updateContainars();
 }
@@ -90,5 +91,4 @@ void MainWindow::updateContainars(){
     engineeringPage->updateStatus();
     othersPage->updateStatus();
     hygienePage->updateStatus();
-    qInfo() << "OK!!!!";
 }

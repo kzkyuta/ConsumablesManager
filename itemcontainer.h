@@ -33,7 +33,7 @@ public:
     void setId(int);
     QString getName();
     static int verticalHeght;
-    void updateStatus();
+    void updateStatus(); // when udp signal received, this func will be called and update the status and display.
 
 protected:
     QPushButton *orderButton;

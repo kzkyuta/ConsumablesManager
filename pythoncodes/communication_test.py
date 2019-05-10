@@ -49,17 +49,6 @@ def thread_start():
 
     return make_response("", 200)
 
-# Example responder to greetings
-@app.route("/slack/events", methods = ["GET"])
-def index():
-    slack_client.api_call(
-        "chat.postMessage",
-        channel="#test",
-        text="You have got an order !",
-        attachments=ordering_message_json
-    )
-    return make_response("", 200)
-
 #redirect from button
 @app.route("/slack/json_html", methods = ["POST"])
 def json_html():
@@ -71,9 +60,17 @@ def json_html():
     val = form_json["actions"][0]["value"]
     name = form_json["actions"][0]["name"]
     fallback = form_json["original_message"]["attachments"][0]["fallback"]
+    callback_id = form_json["original_message"]["attachments"][0]["callback_id"]
+
+    reply_message = {}
+    reply_message["callback_id"] = callback_id
+    reply_message["val"] = val
+    reply_message["name"] = name
+    reply_message["pageName"] = fallback
 
     # when the "done" btn was pushed on slack interface
     if val == "done":
+        print("order finished")
         response = slack_client.api_call(
             "chat.update",
             ts = timeStamp,
@@ -82,16 +79,12 @@ def json_html():
             attachments = reply_ordered_message
         )
 
-        reply_message = {}
-        reply_message["val"] = val
-        reply_message["name"] = name
-        reply_message["pageName"] = fallback
-        # transmit(reply_message)
-        transmit(val)
+        transmit(json.dumps(reply_message))
 
         received_message_json["fallback"] = fallback
         received_message_json["actions"][0]["name"] = name
         received_message_json["text"] = "when you receive " + name + " and put it back to correct place, please push the button and finish this ordering."
+        received_message_json["callback_id"] = callback_id
         received_message_json["image_url"] = "https://github.com/kzkyuta/ConsumablesManager/blob/feature/UDP_connection_btw_python_and_Qt/DataBase/img/" + name + ".jpg?raw=true"
 
         jsonOut = []
@@ -111,11 +104,12 @@ def json_html():
             text = "",
             attachments = reply_received_message
         )
-        transmit(received)
+        transmit(json.dumps(reply_message))
     return make_response("", 200)
 
 # send UDP Signal
 def transmit(data):
+    print("sent")
     UDP_IP = "127.0.0.1"
     UDP_PORT = 5826
     # sock = socket(socket.AF_INET,  # Internet
@@ -214,9 +208,9 @@ class ServerThread(threading.Thread):
                 recv_msg = json.loads(data)
                 ordering_message_json["text"] = "Please finish ordering below\n" + recv_msg["name"] + " from " + recv_msg["pageName"] + " Category\n" +recv_msg["URL"]
                 ordering_message_json["fallback"] = recv_msg["pageName"]
+                ordering_message_json["callback_id"] = recv_msg["id"]
                 ordering_message_json["actions"][0]["name"] = recv_msg["name"]
                 ordering_message_json["image_url"] = "https://github.com/kzkyuta/ConsumablesManager/blob/feature/UDP_connection_btw_python_and_Qt/DataBase/img/" + recv_msg["name"] + ".jpg?raw=true"
-
                 jsonOut = []
                 jsonOut.append(ordering_message_json)
                 slack_client.api_call(
