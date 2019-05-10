@@ -31,6 +31,7 @@ ItemContainer::ItemContainer(QString _name, int _id, int _status, QString _pageN
     connect(orderButton, SIGNAL(clicked()), this, SLOT(on_orderButton_clicked()));
 //    connect(orderButton, SIGNAL(clicked()), this, SLOT(on_orderBtn_clicked()));
     this->setContainerColor();
+    this->changeButtonState();
 }
 
 int ItemContainer::verticalHeght = 240;
@@ -41,24 +42,10 @@ void ItemContainer::on_orderButton_clicked(){
     int res = msgBox.exec();
 //    int res = mMsgBox.exec();
     if(res == QMessageBox::Yes){
-//    if(res == QDialogButtonBox::YesRole){
-        int newStatus = this->getStatus()+1;
-        qInfo() << this->getStatus();
-        if(newStatus >= 3){
-            setStatus(0);
-            DBManager::changeState(this->pageName, this->getId(), 0);
-        }else{
-            this->setStatus(newStatus);
-            DBManager::changeState(this->pageName, this->getId(), newStatus);
-        }
-        qInfo() << "aaa" << DBManager::getState(this->pageName, this->getName());
+        this->sendOrderedSignal();
     }else{
         return;
     }
-
-    // after confirming sending to slack, change the color.
-    this->sendOrderedSignal();
-    this->setContainerColor();
 //    this->changeButtonState();  // set button disabled.
 }
 

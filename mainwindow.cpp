@@ -82,6 +82,8 @@ void MainWindow::receiveUDP(){
         DBManager::changeState(pageName, id, 2);
     }else if(val == "received"){
         DBManager::changeState(pageName, id, 0);
+    }else if(val == "ordered"){
+        DBManager::changeState(pageName, id, 1);
     }
     this->updateContainars();
 }
