@@ -109,7 +109,6 @@ def json_html():
 
 # send UDP Signal
 def transmit(data):
-    print("sent")
     UDP_IP = "127.0.0.1"
     UDP_PORT = 5826
     # sock = socket(socket.AF_INET,  # Internet
@@ -219,8 +218,29 @@ class ServerThread(threading.Thread):
                     text="You have got an order !",
                     attachments=jsonOut
                 )
+                print("callback_id")
+                reply_message = {}
+                reply_message["val"] = "ordered"
+                reply_message["name"] = recv_msg["name"]
+                reply_message["pageName"] = recv_msg["pageName"]
+                reply_message["callback_id"] = str(recv_msg["id"])
+                self.transmitData(json.dumps(reply_message))
+                print(type(recv_msg["id"]))
+
             except:
                 pass
+
+    def transmitData(self, data):
+
+        UDP_IP = "127.0.0.1"
+        UDP_PORT = 5826
+        # sock = socket(socket.AF_INET,  # Internet
+        #                      socket.SOCK_DGRAM)  # UDP
+
+        sock = socket(AF_INET,  # Internet
+                             SOCK_DGRAM)  # UDP
+        sock.sendto(data, (UDP_IP, UDP_PORT))
+        print("UDP sent")
 
 if __name__ == '__main__':
     app.debug = True
