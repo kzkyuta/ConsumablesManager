@@ -13,9 +13,16 @@ ItemContainer::ItemContainer(QString _name, int _id, int _status, QString _pageN
     VLayout = new QVBoxLayout(this);
 
     itemTitle = new QLabel(name);
+    itemImg = new QLabel(name);
     itemTitle->setAlignment(Qt::AlignCenter);
+    itemTitle->setFixedHeight(15);
+    itemImg->setAlignment(Qt::AlignCenter);
+    QPixmap pix("://DataBase/img/" + name + ".jpg");
+    itemImg->setPixmap(pix.scaled(150, 150, Qt::KeepAspectRatio));
     orderButton = new QPushButton("order");
+    orderButton->setFixedHeight(40);
     VLayout->addWidget(itemTitle);
+    VLayout->addWidget(itemImg);
     VLayout->addWidget(orderButton);
 
     msgBox.setText(tr("Are you sure to order this item?"));
@@ -32,6 +39,7 @@ ItemContainer::ItemContainer(QString _name, int _id, int _status, QString _pageN
 //    connect(orderButton, SIGNAL(clicked()), this, SLOT(on_orderBtn_clicked()));
     this->setContainerColor();
     this->changeButtonState();
+    this->changeButtonText();
 }
 
 int ItemContainer::verticalHeght = 240;
@@ -81,19 +89,29 @@ void ItemContainer::setContainerColor(){
     int state = this->getStatus();
     switch (state) {
     case 0:
-        this->setStyleSheet("#SendContainerFrame {background-color: darkgray;}");
+        this->setStyleSheet("#SendContainerFrame {background-color: #FFF6F7;}");
         break;
     case 1:
-        this->setStyleSheet("#SendContainerFrame {background-color: red;}");
+        this->setStyleSheet("#SendContainerFrame {background-color: #FB94A0;}");
         break;
     case 2:
-        this->setStyleSheet("#SendContainerFrame {background-color: blue;}");
+        this->setStyleSheet("#SendContainerFrame {background-color: #B0DEFB;}");
     }
 }
 
 void ItemContainer::changeButtonState(){
     if(status == 0) orderButton->setEnabled(true);
     else orderButton->setEnabled(false);
+}
+
+void ItemContainer::changeButtonText(){
+    if(status == 0){
+        orderButton->setText("Order !!");
+    }else if(status == 1){
+        orderButton->setText("Sent order request");
+    }else if(status == 2){
+        orderButton->setText("Under Delivery");
+    }
 }
 
 void ItemContainer::sendOrderedSignal(){

@@ -13,6 +13,7 @@
 #include <QMessageBox>
 #include <QDialogButtonBox>
 #include <QUdpSocket>
+#include <QPixmap>
 
 #include "dbmanager.h"
 #include "mydialog.h"
@@ -35,7 +36,6 @@ public:
     static int verticalHeght;
     void updateStatus(); // when udp signal received, this func will be called and update the status and display.
 
-protected:
     QPushButton *orderButton;
 
 protected slots:
@@ -49,6 +49,7 @@ private:
     QString url;
     QVBoxLayout *VLayout;
     QLabel *itemTitle;
+    QLabel *itemImg;
     QJsonArray tempArray;
     void setContainerColor();
     QMessageBox msgBox;
@@ -56,6 +57,7 @@ private:
     QDialogButtonBox* msgButtonBox;
     void sendOrderedSignal();
     void changeButtonState();
+    void changeButtonText();
 };
 
 #endif // ITEMCONTAINER_H
