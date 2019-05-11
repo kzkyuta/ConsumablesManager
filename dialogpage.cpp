@@ -5,11 +5,37 @@ DialogPage::DialogPage(QWidget *parent):
     approveBtn(new QPushButton("Yes")),
     cancelBtn(new QPushButton("cancel"))
 {
+    QPalette Pal(palette());
+    Pal.setColor(QPalette::Background, Qt::white);
+    this->setAutoFillBackground(true);
+    this->setPalette(Pal);
     itemImg = new QLabel("aaa");
+    itemImg->setAlignment(Qt::AlignCenter);
     confirmationText = new QLabel("this is test !!");
-    baseLayout->addWidget(confirmationText);
-    baseLayout->addWidget(approveBtn);
-    baseLayout->addWidget(cancelBtn);
+    QFont font = confirmationText->font();
+    font.setPointSize(20);
+    confirmationText->setFont(font);
+    itemImg->setAlignment(Qt::AlignCenter);
+    btnLayout = new QHBoxLayout();
+    msgLayout = new QHBoxLayout();
+
+    // set the btn design
+    approveBtn->setFixedHeight(200);
+    cancelBtn->setFixedHeight(200);
+    QFont font_approveBtn = approveBtn->font();
+    QFont font_cancelBtn = cancelBtn->font();
+    font_approveBtn.setPointSize(50);
+    font_cancelBtn.setPointSize(50);
+    approveBtn->setFont(font_approveBtn);
+    cancelBtn->setFont(font_cancelBtn);
+
+    msgLayout->addWidget(itemImg);
+    msgLayout->addWidget(confirmationText);
+
+    btnLayout->addWidget(approveBtn);
+    btnLayout->addWidget(cancelBtn);
+    baseLayout->addLayout(msgLayout);
+    baseLayout->addLayout(btnLayout);
 
     connect(approveBtn, SIGNAL(clicked()), this, SLOT(on_approveBtn_Clicked()));
     connect(cancelBtn, SIGNAL(clicked()), this, SLOT(on_cancelBtn_Clicked()));
@@ -50,5 +76,7 @@ void DialogPage::setData(QString _name, int _id, QString _pageName, QString _url
 }
 
 void DialogPage::changeTaxt(){
-    confirmationText->setText(this->itemName + " " + QString::number(this->itemID) + " " + this->itemPageName + " " + this->itemURL);
+    QPixmap pix("://DataBase/img/" + this->itemName + ".jpg");
+    itemImg->setPixmap(pix.scaled(120,120, Qt::KeepAspectRatio));
+    confirmationText->setText("Are you sure to order " + this->itemName + " ?");
 }

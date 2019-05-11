@@ -5,12 +5,16 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QDebug>
 #include <QByteArray>
 #include <QUdpSocket>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonDocument>
+#include <QFont>
+#include <QPixmap>
+#include <QPalette>
 
 class DialogPage : public QWidget
 {
@@ -33,12 +37,15 @@ private:
     QLabel *itemImg;
     QLabel *confirmationText;
     QVBoxLayout *baseLayout;
+    QHBoxLayout *btnLayout;
+    QHBoxLayout *msgLayout;
     QString itemName;
     int itemID;
     QString itemPageName;
     QString itemURL;
     void sendOrderSignal();
     void changeTaxt();
+    QPixmap pix;
 };
 
 #endif // DIALOGPAGE_H
