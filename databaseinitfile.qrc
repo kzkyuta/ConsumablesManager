@@ -3,5 +3,28 @@
         <file>DataBase/consumables.csv</file>
         <file>DataBase/tableName.csv</file>
         <file>DataBase/ConsubamleItems.json</file>
+        <file>DataBase/img/air_duster.jpg</file>
+        <file>DataBase/img/battery_AA.jpg</file>
+        <file>DataBase/img/battery_AAA.jpg</file>
+        <file>DataBase/img/battery_D.jpg</file>
+        <file>DataBase/img/battery_N.jpg</file>
+        <file>DataBase/img/clear_files.jpg</file>
+        <file>DataBase/img/coffee.jpg</file>
+        <file>DataBase/img/Curing_tape.jpg</file>
+        <file>DataBase/img/detergent.jpg</file>
+        <file>DataBase/img/filter_tap_water.jpg</file>
+        <file>DataBase/img/flux_cleaner.jpg</file>
+        <file>DataBase/img/glue.jpg</file>
+        <file>DataBase/img/gum_tape.jpg</file>
+        <file>DataBase/img/kimwipe.jpg</file>
+        <file>DataBase/img/masking_tape.jpg</file>
+        <file>DataBase/img/paper_A3.jpg</file>
+        <file>DataBase/img/paper_A4.jpg</file>
+        <file>DataBase/img/paper_cup.jpg</file>
+        <file>DataBase/img/paper_tag.jpg</file>
+        <file>DataBase/img/sponge.jpg</file>
+        <file>DataBase/img/tissue.jpg</file>
+        <file>DataBase/img/wet_tissue.jpg</file>
+        <file>DataBase/img/battery_9V.jpg</file>
     </qresource>
 </RCC>
