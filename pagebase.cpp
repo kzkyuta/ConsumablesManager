@@ -1,6 +1,6 @@
 ﻿#include "pagebase.h"
 
-PageBase::PageBase(int pageId, QWidget *parent):
+PageBase::PageBase(int pageId, QWidget *_parent):
     baseLayout(new QVBoxLayout(this)),
     backButton(new QPushButton("back")),
     cancelButton(new QPushButton("cansel"))

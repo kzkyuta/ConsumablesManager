@@ -10,6 +10,7 @@
 
 #include "dbmanager.h"
 #include "pagebase.h"
+#include "dialogpage.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +30,7 @@ private slots:
     void on_button_3_clicked();
     void on_button_4_clicked();
     void backToInitPage();
+    void on_orderBtn_clicked(QString, int, QString, QString);
     void receiveUDP();
 
 private:
@@ -37,6 +39,7 @@ private:
     PageBase *engineeringPage;
     PageBase *hygienePage;
     PageBase *othersPage;
+    DialogPage *dialog;
     QSqlDatabase db;
     void updateContainars();
 

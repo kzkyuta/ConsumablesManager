@@ -38,8 +38,13 @@ public:
 
     QPushButton *orderButton;
 
-protected slots:
+protected:
+signals:
+    void btnClicked(QString _pageName, int _id, QString _name, QString _url);
+
+public slots:
     void on_orderButton_clicked();
+    void emitSignal();
 
 private:
     int status; // 0:stand by, 1:applied, 2:ordered

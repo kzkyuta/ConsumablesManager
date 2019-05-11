@@ -47,13 +47,13 @@ int ItemContainer::verticalHeght = 240;
 ItemContainer::~ItemContainer(){}
 
 void ItemContainer::on_orderButton_clicked(){
-    int res = msgBox.exec();
-//    int res = mMsgBox.exec();
-    if(res == QMessageBox::Yes){
-        this->sendOrderedSignal();
-    }else{
-        return;
-    }
+    this->emitSignal();
+//    int res = msgBox.exec();
+//    if(res == QMessageBox::Yes){
+//        this->sendOrderedSignal();
+//    }else{
+//        return;
+//    }
 //    this->changeButtonState();  // set button disabled.
 }
 
@@ -136,4 +136,10 @@ void ItemContainer::updateStatus(){
     }
     this->setContainerColor();  // change the color of this container
     this->changeButtonState();  // change the button state.
+    this->changeButtonText();
+}
+
+void ItemContainer::emitSignal(){
+    emit btnClicked(this->name, this->id, this->pageName, this->url);
+    qInfo() << "order btn was clicked";
 }

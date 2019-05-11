@@ -9,14 +9,16 @@ MainWindow::MainWindow(QWidget *parent):
     DBManager::openDB();
     ui->setupUi(this);
 
-    officePage = new PageBase(1);
-    engineeringPage = new PageBase(2);
-    hygienePage = new PageBase(3);
-    othersPage = new PageBase(4);
+    officePage = new PageBase(1, this);
+    engineeringPage = new PageBase(2, this);
+    hygienePage = new PageBase(3, this);
+    othersPage = new PageBase(4, this);
+    dialog = new DialogPage(this);
     ui->stackedWidget->addWidget(officePage);
     ui->stackedWidget->addWidget(engineeringPage);
     ui->stackedWidget->addWidget(hygienePage);
     ui->stackedWidget->addWidget(othersPage);
+    ui->stackedWidget->addWidget(dialog);
 
     receiveSocket = new QUdpSocket(this);
     bool result =  receiveSocket->bind(QHostAddress::AnyIPv4, 5826);
@@ -31,6 +33,9 @@ MainWindow::MainWindow(QWidget *parent):
     connect(hygienePage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
     connect(othersPage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
     connect(receiveSocket, SIGNAL(readyRead()), this, SLOT(receiveUDP()));
+    for(int i = 0; i < officePage->containarItem.size(); i++){
+        connect(officePage->containarItem[i], SIGNAL(btnClicked(QString, int, QString, QString)), this, SLOT(on_orderBtn_clicked(QString, int, QString, QString)));
+    }
 }
 
 MainWindow::~MainWindow(){
@@ -40,8 +45,14 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::backToInitPage(){
-    qInfo() << "backToInitPage";
     ui->stackedWidget->setCurrentIndex(0);
+
+}
+
+void MainWindow::on_orderBtn_clicked(QString _pageName, int _id, QString _name, QString _url){
+    qInfo() << "clicked orderBtn on" << _name;
+    dialog->setData(_pageName, _id, _name, _url);
+    ui->stackedWidget->setCurrentIndex(5);
 }
 
 void MainWindow::on_button_1_clicked(){

@@ -36,6 +36,8 @@ public:
     QPushButton *backButton;
     QPushButton *cancelButton;
 
+    QVector<ItemContainer*> containarItem;
+
 protected slots:
     void on_backButton_clicked();
     void on_cancelButton_clicked();
@@ -52,7 +54,7 @@ private:
     QString pageName; // for managing database
     QString pageTitle; // for label input
     VerticalScrollArea *scroll;
-    QVector<ItemContainer*> containarItem;
+
     ItemContainer *test;
     QStringList itemList;
     QStringList tableList;
