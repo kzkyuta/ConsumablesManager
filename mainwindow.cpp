@@ -25,17 +25,26 @@ MainWindow::MainWindow(QWidget *parent):
     qInfo() << "connection Result is" << result;
 
     connect(officePage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(engineeringPage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(hygienePage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(othersPage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
     connect(officePage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(engineeringPage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(hygienePage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(othersPage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(receiveSocket, SIGNAL(readyRead()), this, SLOT(receiveUDP()));
     for(int i = 0; i < officePage->containarItem.size(); i++){
         connect(officePage->containarItem[i], SIGNAL(btnClicked(QString, int, QString, QString)), this, SLOT(on_orderBtn_clicked(QString, int, QString, QString)));
     }
+    connect(engineeringPage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(engineeringPage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    for(int i = 0; i < engineeringPage->containarItem.size(); i++){
+        connect(engineeringPage->containarItem[i], SIGNAL(btnClicked(QString, int, QString, QString)), this, SLOT(on_orderBtn_clicked(QString, int, QString, QString)));
+    }
+    connect(hygienePage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(hygienePage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    for(int i = 0; i < hygienePage->containarItem.size(); i++){
+        connect(hygienePage->containarItem[i], SIGNAL(btnClicked(QString, int, QString, QString)), this, SLOT(on_orderBtn_clicked(QString, int, QString, QString)));
+    }
+    connect(othersPage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(othersPage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    for(int i = 0; i < othersPage->containarItem.size(); i++){
+        connect(othersPage->containarItem[i], SIGNAL(btnClicked(QString, int, QString, QString)), this, SLOT(on_orderBtn_clicked(QString, int, QString, QString)));
+    }
+    connect(receiveSocket, SIGNAL(readyRead()), this, SLOT(receiveUDP()));
 }
 
 MainWindow::~MainWindow(){
