@@ -45,6 +45,8 @@ MainWindow::MainWindow(QWidget *parent):
         connect(othersPage->containarItem[i], SIGNAL(btnClicked(QString, int, QString, QString)), this, SLOT(on_orderBtn_clicked(QString, int, QString, QString)));
     }
     connect(receiveSocket, SIGNAL(readyRead()), this, SLOT(receiveUDP()));
+    connect(dialog->cancelBtn, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(dialog->approveBtn, SIGNAL(clicked()), this, SLOT(backToInitPage()));
 }
 
 MainWindow::~MainWindow(){
