@@ -27,6 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    dialogpage.cpp \
         main.cpp \
         mainwindow.cpp \
     secondpage.cpp \
@@ -37,6 +38,7 @@ SOURCES += \
     mydialog.cpp
 
 HEADERS += \
+    dialogpage.h \
         mainwindow.h \
     secondpage.h \
     verticalscrollarea.h \
