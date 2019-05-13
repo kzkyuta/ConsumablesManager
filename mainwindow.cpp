@@ -14,39 +14,43 @@ MainWindow::MainWindow(QWidget *parent):
     hygienePage = new PageBase(3, this);
     othersPage = new PageBase(4, this);
     dialog = new DialogPage(this);
+    finishPage = new FinishOrder(this);
     ui->stackedWidget->addWidget(officePage);
     ui->stackedWidget->addWidget(engineeringPage);
     ui->stackedWidget->addWidget(hygienePage);
     ui->stackedWidget->addWidget(othersPage);
     ui->stackedWidget->addWidget(dialog);
+    ui->stackedWidget->addWidget(finishPage);
 
     receiveSocket = new QUdpSocket(this);
     bool result =  receiveSocket->bind(QHostAddress::AnyIPv4, 5826);
     qInfo() << "connection Result is" << result;
 
-    connect(officePage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(officePage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(officePage->backButton, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
+    connect(officePage->cancelButton, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
     for(int i = 0; i < officePage->containarItem.size(); i++){
         connect(officePage->containarItem[i], SIGNAL(btnClicked(QString, int, QString, QString)), this, SLOT(on_orderBtn_clicked(QString, int, QString, QString)));
     }
-    connect(engineeringPage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(engineeringPage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(engineeringPage->backButton, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
+    connect(engineeringPage->cancelButton, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
     for(int i = 0; i < engineeringPage->containarItem.size(); i++){
         connect(engineeringPage->containarItem[i], SIGNAL(btnClicked(QString, int, QString, QString)), this, SLOT(on_orderBtn_clicked(QString, int, QString, QString)));
     }
-    connect(hygienePage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(hygienePage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(hygienePage->backButton, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
+    connect(hygienePage->cancelButton, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
     for(int i = 0; i < hygienePage->containarItem.size(); i++){
         connect(hygienePage->containarItem[i], SIGNAL(btnClicked(QString, int, QString, QString)), this, SLOT(on_orderBtn_clicked(QString, int, QString, QString)));
     }
-    connect(othersPage->backButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(othersPage->cancelButton, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(othersPage->backButton, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
+    connect(othersPage->cancelButton, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
     for(int i = 0; i < othersPage->containarItem.size(); i++){
         connect(othersPage->containarItem[i], SIGNAL(btnClicked(QString, int, QString, QString)), this, SLOT(on_orderBtn_clicked(QString, int, QString, QString)));
     }
     connect(receiveSocket, SIGNAL(readyRead()), this, SLOT(receiveUDP()));
-    connect(dialog->cancelBtn, SIGNAL(clicked()), this, SLOT(backToInitPage()));
-    connect(dialog->approveBtn, SIGNAL(clicked()), this, SLOT(backToInitPage()));
+    connect(dialog->cancelBtn, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
+    connect(dialog->approveBtn, SIGNAL(clicked()), this, SLOT(on_bottun_clicked()));
+//    connect(dialog->approveBtn, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
+    connect(finishPage->finishBtn, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
 }
 
 MainWindow::~MainWindow(){
@@ -55,14 +59,17 @@ MainWindow::~MainWindow(){
     delete ui;
 }
 
-void MainWindow::backToInitPage(){
+void MainWindow::on_backToInitPage(){
     ui->stackedWidget->setCurrentIndex(0);
-
 }
 
-void MainWindow::on_orderBtn_clicked(QString _pageName, int _id, QString _name, QString _url){
+void MainWindow::on_bottun_clicked(){
+    ui->stackedWidget->setCurrentIndex(6);
+}
+
+void MainWindow::on_orderBtn_clicked(QString _name, int _id, QString _pageName, QString _url){
     qInfo() << "clicked orderBtn on" << _name;
-    dialog->setData(_pageName, _id, _name, _url);
+    dialog->setData(_name, _id, _pageName, _url);
     ui->stackedWidget->setCurrentIndex(5);
 }
 

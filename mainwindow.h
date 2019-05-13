@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QUdpSocket>
 
+#include "finishorder.h"
 #include "dbmanager.h"
 #include "pagebase.h"
 #include "dialogpage.h"
@@ -29,8 +30,9 @@ private slots:
     void on_button_2_clicked();
     void on_button_3_clicked();
     void on_button_4_clicked();
-    void backToInitPage();
+    void on_backToInitPage();
     void on_orderBtn_clicked(QString, int, QString, QString);
+    void on_bottun_clicked();
     void receiveUDP();
 
 private:
@@ -40,6 +42,8 @@ private:
     PageBase *hygienePage;
     PageBase *othersPage;
     DialogPage *dialog;
+    FinishOrder *finishPage;
+
     QSqlDatabase db;
     void updateContainars();
 

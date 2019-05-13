@@ -45,7 +45,6 @@ private:
     QString itemURL;
     void sendOrderSignal();
     void changeTaxt();
-    QPixmap pix;
 };
 
 #endif // DIALOGPAGE_H

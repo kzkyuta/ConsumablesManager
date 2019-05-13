@@ -28,6 +28,7 @@ CONFIG += c++11
 
 SOURCES += \
     dialogpage.cpp \
+    finishorder.cpp \
         main.cpp \
         mainwindow.cpp \
     secondpage.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
 
 HEADERS += \
     dialogpage.h \
+    finishorder.h \
         mainwindow.h \
     secondpage.h \
     verticalscrollarea.h \
