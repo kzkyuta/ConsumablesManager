@@ -3,6 +3,11 @@
 FinishOrder::FinishOrder(QWidget *parent) :
    QWidget(parent), baseLayout(new QHBoxLayout(this)), finishBtn(new QPushButton("Finish"))
 {
+    QPalette Pal(palette());
+    Pal.setColor(QPalette::Background, Qt::white);
+    this->setAutoFillBackground(true);
+    this->setPalette(Pal);
+
     vLayout = new QVBoxLayout();
 
     finishBtn->setFixedHeight(200);

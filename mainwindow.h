@@ -12,6 +12,7 @@
 #include "dbmanager.h"
 #include "pagebase.h"
 #include "dialogpage.h"
+#include "underprocessingpage.h"
 
 namespace Ui {
 class MainWindow;
@@ -32,7 +33,8 @@ private slots:
     void on_button_4_clicked();
     void on_backToInitPage();
     void on_orderBtn_clicked(QString, int, QString, QString);
-    void on_bottun_clicked();
+    void on_change_to_finished();
+    void on_change_to_processing();
     void receiveUDP();
 
 private:
@@ -43,6 +45,7 @@ private:
     PageBase *othersPage;
     DialogPage *dialog;
     FinishOrder *finishPage;
+    UnderProcessingPage *processingPage;
 
     QSqlDatabase db;
     void updateContainars();

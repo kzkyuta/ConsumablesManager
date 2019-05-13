@@ -27,5 +27,7 @@
         <file>DataBase/img/wet_tissue.jpg</file>
         <file>DataBase/img/battery_9V.jpg</file>
         <file>DataBase/img/ojigi_boy.png</file>
+        <file>DataBase/img/processing.gif</file>
+        <file>DataBase/img/error.png</file>
     </qresource>
 </RCC>

@@ -15,12 +15,14 @@ MainWindow::MainWindow(QWidget *parent):
     othersPage = new PageBase(4, this);
     dialog = new DialogPage(this);
     finishPage = new FinishOrder(this);
+    processingPage = new UnderProcessingPage(this);
     ui->stackedWidget->addWidget(officePage);
     ui->stackedWidget->addWidget(engineeringPage);
     ui->stackedWidget->addWidget(hygienePage);
     ui->stackedWidget->addWidget(othersPage);
     ui->stackedWidget->addWidget(dialog);
-    ui->stackedWidget->addWidget(finishPage);
+    ui->stackedWidget->addWidget(finishPage);  // 6
+    ui->stackedWidget->addWidget(processingPage);  // 7
 
     receiveSocket = new QUdpSocket(this);
     bool result =  receiveSocket->bind(QHostAddress::AnyIPv4, 5826);
@@ -48,8 +50,7 @@ MainWindow::MainWindow(QWidget *parent):
     }
     connect(receiveSocket, SIGNAL(readyRead()), this, SLOT(receiveUDP()));
     connect(dialog->cancelBtn, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
-    connect(dialog->approveBtn, SIGNAL(clicked()), this, SLOT(on_bottun_clicked()));
-//    connect(dialog->approveBtn, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
+    connect(dialog->approveBtn, SIGNAL(clicked()), this, SLOT(on_change_to_processing()));
     connect(finishPage->finishBtn, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
 }
 
@@ -63,8 +64,13 @@ void MainWindow::on_backToInitPage(){
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void MainWindow::on_bottun_clicked(){
+void MainWindow::on_change_to_finished(){
     ui->stackedWidget->setCurrentIndex(6);
+}
+
+void MainWindow::on_change_to_processing(){
+    processingPage->playGif();
+    ui->stackedWidget->setCurrentIndex(7);
 }
 
 void MainWindow::on_orderBtn_clicked(QString _name, int _id, QString _pageName, QString _url){
@@ -113,6 +119,8 @@ void MainWindow::receiveUDP(){
         DBManager::changeState(pageName, id, 0);
     }else if(val == "ordered"){
         DBManager::changeState(pageName, id, 1);
+        ui->stackedWidget->setCurrentIndex(6);
+        processingPage->stopGif();
     }
     this->updateContainars();
 }

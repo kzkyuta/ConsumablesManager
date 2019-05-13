@@ -72,7 +72,7 @@ void DialogPage::setData(QString _name, int _id, QString _pageName, QString _url
     itemID = _id;
     itemPageName = _pageName;
     itemURL = _url;
-    changeTaxt();
+    this->changeTaxt();
 }
 
 void DialogPage::changeTaxt(){

@@ -32,6 +32,7 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     secondpage.cpp \
+    underprocessingpage.cpp \
     verticalscrollarea.cpp \
     pagebase.cpp \
     itemcontainer.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     finishorder.h \
         mainwindow.h \
     secondpage.h \
+    underprocessingpage.h \
     verticalscrollarea.h \
     pagebase.h \
     itemcontainer.h \
