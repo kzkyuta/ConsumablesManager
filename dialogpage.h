@@ -28,6 +28,7 @@ public:
     QPushButton *cancelBtn;
 
     void setData(QString, int, QString, QString);
+    void sendOrderSignal(QString, int, QString, QString);
 
 private slots:
     void on_approveBtn_Clicked();

@@ -25,6 +25,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void sendConfirmSig(QString, int, QString, QString, QString, QString);
 
 private slots:
     void on_button_1_clicked();

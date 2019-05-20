@@ -111,12 +111,16 @@ void MainWindow::receiveUDP(){
     QString val = jsonobj.value(QString("val")).toString();
     QString name = jsonobj.value(QString("name")).toString(); // id is needed
     QString pageName = jsonobj.value(QString("pageName")).toString();
+    QString timeStamp = jsonobj.value(QString("timeStamp")).toString();
+    QString slackChannel = jsonobj.value(QString("slackChannel")).toString();
     int id = jsonobj.value(QString("callback_id")).toString().toInt();
 
     if(val == "done"){
         DBManager::changeState(pageName, id, 2);
+        sendConfirmSig(val, id, name, pageName, timeStamp, slackChannel);
     }else if(val == "received"){
         DBManager::changeState(pageName, id, 0);
+        sendConfirmSig(val, id, name, pageName, timeStamp, slackChannel);
     }else if(val == "ordered"){
         DBManager::changeState(pageName, id, 1);
         ui->stackedWidget->setCurrentIndex(6);
@@ -130,4 +134,19 @@ void MainWindow::updateContainars(){
     engineeringPage->updateStatus();
     othersPage->updateStatus();
     hygienePage->updateStatus();
+}
+
+void MainWindow::sendConfirmSig(QString _val, int _id, QString _name, QString _pageName, QString _timeStamp, QString _slackChannel){
+    QUdpSocket sendPort;
+    QByteArray datagram;
+    QJsonObject jsonObj;
+    jsonObj["val"] = _val;
+    jsonObj["pageName"] = _pageName;
+    jsonObj["id"] = _id;
+    jsonObj["name"] = _name;
+    jsonObj["timeStamp"] = _timeStamp;
+    jsonObj["slackChannel"] = _slackChannel;
+    QJsonDocument jsonDoc(jsonObj);
+    QByteArray ba = jsonDoc.toJson();
+    sendPort.writeDatagram(ba.data(), QHostAddress::LocalHost, 5824);
 }

@@ -46,7 +46,7 @@ DialogPage::~DialogPage(){
 }
 
 void DialogPage::on_approveBtn_Clicked(){
-    sendOrderSignal();
+    this->sendOrderSignal();
     qInfo() << "orderSignal was Sent";
 }
 
@@ -58,10 +58,13 @@ void DialogPage::sendOrderSignal(){
     QUdpSocket sendPort;
     QByteArray datagram;
     QJsonObject jsonObj;
+    jsonObj["val"] = "ordered";
     jsonObj["pageName"] = this->itemPageName;
     jsonObj["id"] = this->itemID;
     jsonObj["name"] = this->itemName;
     jsonObj["URL"] = this->itemURL;
+    jsonObj["timeStamp"] = "";
+    jsonObj["slackChannel"] = "";
     QJsonDocument jsonDoc(jsonObj);
     QByteArray ba = jsonDoc.toJson();
     sendPort.writeDatagram(ba.data(), QHostAddress::LocalHost, 5824);
