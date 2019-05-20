@@ -32,8 +32,6 @@ slack_events_adapter = SlackEventAdapter(slack_signing_secret, "/confirm", app)
 @slack_events_adapter.on("message")
 def handle_message(event_data):
     message = event_data["event"]
-    # If the incoming message contains "hi", then respond with a "Hello" message
-    print(message.get('text'))
     if message.get("subtype") is None and "hi" in message.get('text'):
         channel = message["channel"]
         message = "Hello <@%s>! :tada:" % message["user"]
@@ -67,8 +65,6 @@ def json_html():
     reply_message["pageName"] = fallback  # pagename
     reply_message["timeStamp"] = timeStamp  # timeStamp
     reply_message["slackChannel"] = slackChannel  #slackChannel
-    print("val is")
-    print(val)
 
     # when the "done" btn was pushed on slack interface
     if val == "done":
@@ -76,7 +72,6 @@ def json_html():
         transmit(json.dumps(reply_message))
 
     else:
-        print(reply_message)
         transmit(json.dumps(reply_message))
     return make_response("", 200)
 
@@ -168,16 +163,12 @@ class ServerThread(threading.Thread):
         self.udpServSock.bind(("127.0.0.1", 5824))
         self.BUFSIZE = 1024
         self.data = "a"
-        print(self.data)
 
     def run(self):
         while True:
             try:
                 data, addr = self.udpServSock.recvfrom(self.BUFSIZE)
                 recv_msg = json.loads(data)
-
-                print("received json is")
-                print(recv_msg)
 
                 val = recv_msg["val"]
                 id = recv_msg["id"]
@@ -210,7 +201,6 @@ class ServerThread(threading.Thread):
                     reply_message["callback_id"] = str(id)
                     reply_message["slackChannel"] = slackChannel
                     reply_message["timeStamp"] = timeStamp
-                    print(reply_message)
                     self.transmitData(json.dumps(reply_message))
 
                 elif val == "done":
@@ -239,7 +229,6 @@ class ServerThread(threading.Thread):
                     )
 
                 elif val == "received":
-                    print("OK")
                     response = slack_client.api_call(
                         "chat.update",
                         ts = timeStamp,
