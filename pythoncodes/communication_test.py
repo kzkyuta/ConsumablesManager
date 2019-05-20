@@ -17,9 +17,8 @@ from socket import *
 import threading
 
 # token from slack api manager page
-slack_bot_token = "xoxb-170654737781-602026864064-jtsgIqk1IVKy79YsJj4S6LoO"
-slack_signing_secret = "09e62ca3df5b1fea582cda5aff964eb2"
-
+slack_bot_token = os.environ["SLACK_BOT_TOKEN"] # export SLACK_BOT_TOKEN=xxxXXxxXXxXXxXXXXxxxX.xXxxxXxxxx
+slack_signing_secret = os.environ["SLACK_SIGNING_SECRET"] # export SLACK_SIGNING_SECRET=xxxxxxxxXxxXxxXxXXXxxXxxx
 # Build slack client with slack bot token from oath page
 slack_client = SlackClient(slack_bot_token)
 
