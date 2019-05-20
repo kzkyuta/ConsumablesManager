@@ -46,11 +46,10 @@ def thread_start():
     th = ServerThread()
     th.setDaemon(True)
     th.start()
-
     return make_response("", 200)
 
 #redirect from button
-@app.route("/slack/json_html", methods = ["POST"])
+@app.route("/slack/json_html", methods = ["POST"]) # For interactive Components
 def json_html():
 
     # Parse the request payload
@@ -67,43 +66,18 @@ def json_html():
     reply_message["val"] = val  # done, received;
     reply_message["name"] = name  # name
     reply_message["pageName"] = fallback  # pagename
+    reply_message["timeStamp"] = timeStamp  # timeStamp
+    reply_message["slackChannel"] = slackChannel  #slackChannel
+    print("val is")
+    print(val)
 
     # when the "done" btn was pushed on slack interface
     if val == "done":
         print("order finished")
-        response = slack_client.api_call(
-            "chat.update",
-            ts = timeStamp,
-            channel=slackChannel,
-            text = "",
-            attachments = reply_ordered_message
-        )
-
         transmit(json.dumps(reply_message))
 
-        received_message_json["fallback"] = fallback
-        received_message_json["actions"][0]["name"] = name
-        received_message_json["text"] = "when you receive " + name + " and put it back to correct place, please push the button and finish this ordering."
-        received_message_json["callback_id"] = callback_id
-        received_message_json["image_url"] = "https://github.com/kzkyuta/ConsumablesManager/blob/feature/UDP_connection_btw_python_and_Qt/DataBase/img/" + name + ".jpg?raw=true"
-
-        jsonOut = []
-        jsonOut.append(received_message_json)
-
-        slack_client.api_call(
-            "chat.postMessage",
-            channel=slackChannel,
-            text="",
-            attachments=jsonOut
-        )
     else:
-        response = slack_client.api_call(
-            "chat.update",
-            ts = timeStamp,
-            channel=slackChannel,
-            text = "",
-            attachments = reply_received_message
-        )
+        print(reply_message)
         transmit(json.dumps(reply_message))
     return make_response("", 200)
 
@@ -111,8 +85,6 @@ def json_html():
 def transmit(data):
     UDP_IP = "127.0.0.1"
     UDP_PORT = 5826
-    # sock = socket(socket.AF_INET,  # Internet
-    #                      socket.SOCK_DGRAM)  # UDP
     sock = socket(AF_INET,  # Internet
                          SOCK_DGRAM)  # UDP
     sock.sendto(data, (UDP_IP, UDP_PORT))
@@ -120,7 +92,6 @@ def transmit(data):
 # reply messag after pushing "done" btn
 reply_ordered_message = [{
     "title" : "Thank you for ordering !",
-    # "text" : "when you receive package, please put correct place",
     "fallback" : "bbb",
     "color": "#3AA3E3",
     "attachment_type": "default",
@@ -205,29 +176,78 @@ class ServerThread(threading.Thread):
             try:
                 data, addr = self.udpServSock.recvfrom(self.BUFSIZE)
                 recv_msg = json.loads(data)
-                ordering_message_json["text"] = "Please finish ordering below\n" + recv_msg["name"] + " from " + recv_msg["pageName"] + " Category\n" +recv_msg["URL"]
-                ordering_message_json["fallback"] = recv_msg["pageName"]
-                ordering_message_json["callback_id"] = recv_msg["id"]
-                ordering_message_json["actions"][0]["name"] = recv_msg["name"]
-                ordering_message_json["image_url"] = "https://github.com/kzkyuta/ConsumablesManager/blob/feature/UDP_connection_btw_python_and_Qt/DataBase/img/" + recv_msg["name"] + ".jpg?raw=true"
+
+                print("received json is")
+                print(recv_msg)
 
                 val = recv_msg["val"]
-                jsonOut = []
-                jsonOut.append(ordering_message_json)
+                id = recv_msg["id"]
+                name = recv_msg["name"]
+                pageName = recv_msg["pageName"]
+                timeStamp = recv_msg["timeStamp"]
+                slackChannel = recv_msg["slackChannel"]
 
-                slack_client.api_call(
-                    "chat.postMessage",
-                    channel="#test",
-                    text="You have got an order !",
-                    attachments=jsonOut
-                )
+                if val == "ordered":
+                    ordering_message_json["text"] = "Please finish ordering below\n" + recv_msg["name"] + " from " + recv_msg["pageName"] + " Category\n" +recv_msg["URL"]
+                    ordering_message_json["fallback"] = recv_msg["pageName"]
+                    ordering_message_json["callback_id"] = recv_msg["id"]
+                    ordering_message_json["actions"][0]["name"] = recv_msg["name"]
+                    ordering_message_json["image_url"] = "https://github.com/kzkyuta/ConsumablesManager/blob/feature/UDP_connection_btw_python_and_Qt/DataBase/img/" + recv_msg["name"] + ".jpg?raw=true"
 
-                reply_message = {}
-                reply_message["val"] = "ordered"
-                reply_message["name"] = recv_msg["name"]
-                reply_message["pageName"] = recv_msg["pageName"]
-                reply_message["callback_id"] = str(recv_msg["id"])
-                self.transmitData(json.dumps(reply_message))
+                    jsonOut_ordered = []
+                    jsonOut_ordered.append(ordering_message_json)
+
+                    slack_client.api_call(
+                        "chat.postMessage",
+                        channel="#test",
+                        text="You have got an order !",
+                        attachments=jsonOut_ordered
+                    )
+
+                    reply_message = {}
+                    reply_message["val"] = val
+                    reply_message["name"] = name
+                    reply_message["pageName"] = pageName
+                    reply_message["callback_id"] = str(id)
+                    reply_message["slackChannel"] = slackChannel
+                    reply_message["timeStamp"] = timeStamp
+                    print(reply_message)
+                    self.transmitData(json.dumps(reply_message))
+
+                elif val == "done":
+                    response = slack_client.api_call(
+                        "chat.update",
+                        ts = timeStamp,
+                        channel=slackChannel,
+                        text = "",
+                        attachments = reply_ordered_message
+                    )
+
+                    received_message_json["fallback"] = pageName
+                    received_message_json["actions"][0]["name"] = name
+                    received_message_json["text"] = "when you receive " + name + " and put it back to correct place, please push the button and finish this ordering."
+                    received_message_json["callback_id"] = id
+                    received_message_json["image_url"] = "https://github.com/kzkyuta/ConsumablesManager/blob/feature/UDP_connection_btw_python_and_Qt/DataBase/img/" + name + ".jpg?raw=true"
+
+                    jsonOut = []
+                    jsonOut.append(received_message_json)
+
+                    slack_client.api_call(
+                        "chat.postMessage",
+                        channel=slackChannel,
+                        text="",
+                        attachments=jsonOut
+                    )
+
+                elif val == "received":
+                    print("OK")
+                    response = slack_client.api_call(
+                        "chat.update",
+                        ts = timeStamp,
+                        channel=slackChannel,
+                        text = "",
+                        attachments = reply_received_message
+                    )
 
             except:
                 pass
@@ -242,38 +262,6 @@ class ServerThread(threading.Thread):
                              SOCK_DGRAM)  # UDP
         sock.sendto(data, (UDP_IP, UDP_PORT))
         print("UDP sent")
-
-    # def sendMsgToSlack(self, _val, _jsonOut):
-    #     if(_val == "ordered"):
-    #         slack_client.api_call(
-    #             "chat.postMessage",
-    #             channel="#test",
-    #             text="You have got an order !",
-    #             attachments=jsonOut
-    #         )
-    #
-    #     if(_val == "done"):
-    #         response = slack_client.api_call(
-    #             "chat.update",
-    #             ts = timeStamp,
-    #             channel=slackChannel,
-    #             text = "",
-    #             attachments = reply_ordered_message
-    #         )
-    #         slack_client.api_call(
-    #             "chat.postMessage",
-    #             channel=slackChannel,
-    #             text="",
-    #             attachments=jsonOut
-    #         )
-    #     if(_val == "received"):
-    #         response = slack_client.api_call(
-    #             "chat.update",
-    #             ts = timeStamp,
-    #             channel=slackChannel,
-    #             text = "",
-    #             attachments = reply_received_message
-    #         )
 
 if __name__ == '__main__':
     app.debug = True
