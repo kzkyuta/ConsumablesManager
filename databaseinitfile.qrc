@@ -29,5 +29,39 @@
         <file>DataBase/img/ojigi_boy.png</file>
         <file>DataBase/img/processing.gif</file>
         <file>DataBase/img/error.png</file>
+        <file>DataBase/img/black_pen.jpg</file>
+        <file>DataBase/img/blue_pen.jpg</file>
+        <file>DataBase/img/bluetooth_module.jpg</file>
+        <file>DataBase/img/breadboard_small.jpg</file>
+        <file>DataBase/img/breadboard.jpg</file>
+        <file>DataBase/img/button_battery.jpg</file>
+        <file>DataBase/img/detergent_refill.jpg</file>
+        <file>DataBase/img/double_sided_tape.jpg</file>
+        <file>DataBase/img/flux.jpg</file>
+        <file>DataBase/img/layserCutter_filter.jpg</file>
+        <file>DataBase/img/mending_tape.jpg</file>
+        <file>DataBase/img/nipper_NZ05_large.jpg</file>
+        <file>DataBase/img/nipper_NZ05.jpg</file>
+        <file>DataBase/img/nipper_small.jpg</file>
+        <file>DataBase/img/nipper.jpg</file>
+        <file>DataBase/img/paper_tag_small.jpg</file>
+        <file>DataBase/img/red_pen.jpg</file>
+        <file>DataBase/img/richo_ink_black.jpg</file>
+        <file>DataBase/img/richo_ink_magenta.jpg</file>
+        <file>DataBase/img/richo_ink_yellow.jpg</file>
+        <file>DataBase/img/solder_0.3.jpg</file>
+        <file>DataBase/img/solder_0.6.jpg</file>
+        <file>DataBase/img/solder_extractor.jpg</file>
+        <file>DataBase/img/tepra_white_tape.jpg</file>
+        <file>DataBase/img/trash_bags.jpg</file>
+        <file>DataBase/img/tweezers_2.jpg</file>
+        <file>DataBase/img/tweezers_3.jpg</file>
+        <file>DataBase/img/tweezers.jpg</file>
+        <file>DataBase/img/wet_tissue_refill.jpg</file>
+        <file>DataBase/img/white_board_marker_cartridge_black.jpg</file>
+        <file>DataBase/img/white_board_marker_cartridge_red.jpg</file>
+        <file>DataBase/img/wrapped_cable_Black.jpg</file>
+        <file>DataBase/img/wrapped_cable_red.jpg</file>
+        <file>DataBase/img/wrapped_cable_white.jpg</file>
     </qresource>
 </RCC>
