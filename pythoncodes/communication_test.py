@@ -43,6 +43,7 @@ def thread_start():
     th = ServerThread()
     th.setDaemon(True)
     th.start()
+    print("server started")
     return make_response("", 200)
 
 #redirect from button
@@ -68,10 +69,11 @@ def json_html():
 
     # when the "done" btn was pushed on slack interface
     if val == "done":
-        print("order finished")
+        print("got ordered report from slack")
         transmit(json.dumps(reply_message))
 
     else:
+        print("got received report from slack")
         transmit(json.dumps(reply_message))
     return make_response("", 200)
 
@@ -178,6 +180,7 @@ class ServerThread(threading.Thread):
                 slackChannel = recv_msg["slackChannel"]
 
                 if val == "ordered":
+                    print("got order request")
                     ordering_message_json["text"] = "Please finish ordering below\n" + recv_msg["name"] + " from " + recv_msg["pageName"] + " Category\n" +recv_msg["URL"]
                     ordering_message_json["fallback"] = recv_msg["pageName"]
                     ordering_message_json["callback_id"] = recv_msg["id"]
@@ -204,6 +207,7 @@ class ServerThread(threading.Thread):
                     self.transmitData(json.dumps(reply_message))
 
                 elif val == "done":
+                    print("got ordered report from Qt")
                     response = slack_client.api_call(
                         "chat.update",
                         ts = timeStamp,
@@ -229,6 +233,7 @@ class ServerThread(threading.Thread):
                     )
 
                 elif val == "received":
+                    print("got received report from Qt")
                     response = slack_client.api_call(
                         "chat.update",
                         ts = timeStamp,
