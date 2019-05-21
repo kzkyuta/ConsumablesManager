@@ -63,5 +63,11 @@
         <file>DataBase/img/wrapped_cable_Black.jpg</file>
         <file>DataBase/img/wrapped_cable_red.jpg</file>
         <file>DataBase/img/wrapped_cable_white.jpg</file>
+        <file>DataBase/img/filter_tap_water_404.jpg</file>
+        <file>DataBase/img/filter_tap_water_outSide.jpg</file>
+        <file>DataBase/img/copper_wire_tin_plating.jpg</file>
+        <file>DataBase/img/richo_ink_cyan.jpg</file>
+        <file>DataBase/img/flat_cable.jpg</file>
+        <file>DataBase/img/richo_ink_drum_unit_black.jpg</file>
     </qresource>
 </RCC>
