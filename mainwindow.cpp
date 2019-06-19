@@ -115,6 +115,12 @@ void MainWindow::receiveUDP(){
     QString slackChannel = jsonobj.value(QString("slackChannel")).toString();
     int id = jsonobj.value(QString("callback_id")).toString().toInt();
 
+    qInfo() <<"received UDP val" << val;
+    qInfo() <<"received UDP id" << id;
+    qInfo() <<"received UDP name" << name;
+    qInfo() <<"received UDP pageName" << pageName;
+    qInfo() << "timeStamp" << timeStamp;
+
     if(val == "done"){
         DBManager::changeState(pageName, id, 2);
         sendConfirmSig(val, id, name, pageName, timeStamp, slackChannel);
