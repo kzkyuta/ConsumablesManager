@@ -6,6 +6,7 @@
 
 QT += core gui
 QT += sql
+QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,21 +27,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    dialogpage.cpp \
+    finishorder.cpp \
         main.cpp \
         mainwindow.cpp \
     secondpage.cpp \
+    underprocessingpage.cpp \
     verticalscrollarea.cpp \
     pagebase.cpp \
     itemcontainer.cpp \
-    dbmanager.cpp
+    dbmanager.cpp \
+    mydialog.cpp
 
 HEADERS += \
+    dialogpage.h \
+    finishorder.h \
         mainwindow.h \
     secondpage.h \
+    underprocessingpage.h \
     verticalscrollarea.h \
     pagebase.h \
     itemcontainer.h \
-    dbmanager.h
+    dbmanager.h \
+    mydialog.h
 
 FORMS += \
         mainwindow.ui \

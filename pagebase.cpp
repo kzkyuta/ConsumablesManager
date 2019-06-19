@@ -1,6 +1,6 @@
 ﻿#include "pagebase.h"
 
-PageBase::PageBase(int pageId, QWidget *parent):
+PageBase::PageBase(int pageId, QWidget *_parent):
     baseLayout(new QVBoxLayout(this)),
     backButton(new QPushButton("back")),
     cancelButton(new QPushButton("cansel"))
@@ -32,22 +32,29 @@ PageBase::PageBase(int pageId, QWidget *parent):
     baseLayout->addLayout(VLayout);
     VLayout->addWidget(scroll);
 
-    // database open
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("./consumableManage.sqlite3");
-    db.open();
-
-    // table open
-    if(db.tables().count() == 0){ // if there is no table, create.
-        createDB(db);
+    // if there is no tables, this code will create this own table
+    if(DBManager::countTableNum() == 0){
+        DBManager::createTable(pageName);
     }
 
-    setupItemContainer(db);
+    // if there is some tables, this code check if there is this own table or not.
+    noTable = false;
+    for(int i = 0; i < DBManager::countTableNum(); i++){
+        if(DBManager::getTableName(i) == pageName){
+            noTable = false;
+            break;
+        }else{
+            noTable = true;
+        }
+    }
+    if(noTable) DBManager::createTable(pageName);
 
-    db.close();
-
-    connect(backButton, SIGNAL(clicked()), this, SLOT(on_backButton_clicked()));
-    connect(cancelButton, SIGNAL(clicked()), this, SLOT(on_cancelButton_clicked()));
+    tempArray = DBManager::setupContainer(pageName);
+    for(int i = 0; i < tempArray.size(); i++){
+        QJsonObject temp = tempArray[i].toObject();
+        containarItem.append(new ItemContainer(temp["name"].toString(), temp["id"].toInt(), temp["status"].toInt(), this->getPageName(), temp["URL"].toString()));
+        scroll->addWidget(containarItem.back(),i/3, i%3);
+    }
 }
 
 PageBase::~PageBase(){}
@@ -145,10 +152,17 @@ void PageBase::setupItemContainer(QSqlDatabase db){
         QString name = query.value(1).toString();
         int status = query.value(2).toInt();
         QString URL = query.value(3).toString();
+        qInfo() << URL;
         int archive = query.value(4).toInt();
-        containarItem.append(new ItemContainer(name,id, status));
+        containarItem.append(new ItemContainer(name,id, status, this->getPageName(), URL));
         scroll->addWidget(containarItem.back(), i/3 , i%3);
         i ++;
         qDebug() << QString("id(%1),name(%2),status(%3),URL(%4),archive(%5)").arg(id).arg(name).arg(status).arg(URL).arg(archive);
+    }
+}
+
+void PageBase::updateStatus(){
+    for(int i = 0; i < containarItem.size(); i++){
+        containarItem[i]->updateStatus();
     }
 }

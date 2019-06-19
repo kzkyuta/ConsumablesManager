@@ -31,13 +31,18 @@ public:
     QString getPageName();
     void setPageId(int);
 
+    void updateStatus();
+
+    QPushButton *backButton;
+    QPushButton *cancelButton;
+
+    QVector<ItemContainer*> containarItem;
+
 protected slots:
     void on_backButton_clicked();
     void on_cancelButton_clicked();
 
 protected:
-    QPushButton *backButton;
-    QPushButton *cancelButton;
     QLabel *titleLabel;
 
 private:
@@ -49,14 +54,16 @@ private:
     QString pageName; // for managing database
     QString pageTitle; // for label input
     VerticalScrollArea *scroll;
-    QVector<ItemContainer*> containarItem;
+
     ItemContainer *test;
     QStringList itemList;
     QStringList tableList;
+    QJsonArray tempArray;
     void createDB(QSqlDatabase);
     void setupItemContainer(QSqlDatabase);
 
     void setTitle(int id);
+    bool noTable;
 };
 
 #endif // PAGEBAGE_H
