@@ -54,8 +54,7 @@ HEADERS += \
     mydialog.h
 
 FORMS += \
-        mainwindow.ui \
-    test.ui
+        mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
