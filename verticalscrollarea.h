@@ -4,6 +4,7 @@
 #include <QScrollArea>
 #include <QGridLayout>
 #include <QScrollBar>
+#include <QScroller>
 
 #include "itemcontainer.h"
 

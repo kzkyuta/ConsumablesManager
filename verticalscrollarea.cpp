@@ -12,6 +12,8 @@ VerticalScrollArea::VerticalScrollArea(int rows, int cols, QWidget *parent = Q_N
     childGrid = new QGridLayout();
     parentGrid->addLayout(childGrid);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    QScroller::grabGesture(this, QScroller::LeftMouseButtonGesture);
 }
 
 VerticalScrollArea::~VerticalScrollArea(){}
