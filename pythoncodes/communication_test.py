@@ -196,7 +196,7 @@ class ServerThread(threading.Thread):
                         text="You have got an order !",
                         attachments=jsonOut_ordered
                     )
-
+                    print("sent json data to slack")
                     reply_message = {}
                     reply_message["val"] = val
                     reply_message["name"] = name
