@@ -7,6 +7,7 @@
 #include <QIntegerForSize>
 #include <QDebug>
 #include <QUdpSocket>
+#include <QProcess>
 
 #include "finishorder.h"
 #include "dbmanager.h"
@@ -52,6 +53,7 @@ private:
     void updateContainars();
 
     QUdpSocket *receiveSocket;
+    QProcess process;
 };
 
 #endif // MAINWINDOW_H
