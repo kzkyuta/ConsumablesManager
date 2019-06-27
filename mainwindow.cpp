@@ -52,6 +52,8 @@ MainWindow::MainWindow(QWidget *parent):
     connect(dialog->cancelBtn, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
     connect(dialog->approveBtn, SIGNAL(clicked()), this, SLOT(on_change_to_processing()));
     connect(finishPage->finishBtn, SIGNAL(clicked()), this, SLOT(on_backToInitPage()));
+
+    process.start("curl https://utailconsumablemanager_test.serveo.net/python/thread_start");  // it is needed to change based on the slack setting.
 }
 
 MainWindow::~MainWindow(){
