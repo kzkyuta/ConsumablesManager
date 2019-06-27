@@ -11,6 +11,8 @@ QT += network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ConsumablesManager
+target.path = /home/pi/test
+INSTALLS +=target
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -52,8 +54,7 @@ HEADERS += \
     mydialog.h
 
 FORMS += \
-        mainwindow.ui \
-    test.ui
+        mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
