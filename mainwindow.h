@@ -53,7 +53,7 @@ private:
     void updateContainars();
 
     QUdpSocket *receiveSocket;
-    QProcess process;
+    // QProcess process;
 };
 
 #endif // MAINWINDOW_H
